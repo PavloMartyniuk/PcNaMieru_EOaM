@@ -216,15 +216,22 @@
 
     const savedBuilds = readStorage(savedBuildsKey, []);
     if (Array.isArray(savedBuilds) && savedBuilds.length > 0) {
-      const lastSaved = savedBuilds[savedBuilds.length - 1];
-      if (products.processors.some((item) => item.id === lastSaved.processorId)) {
-        processorSelect.value = lastSaved.processorId;
+      const requestedBuildId = new URLSearchParams(window.location.search).get("zostava");
+      const requestedBuild = requestedBuildId
+        ? savedBuilds.find((build) => build && build.id === requestedBuildId)
+        : null;
+      if (requestedBuildId && !requestedBuild) {
+        console.error(`Uložená zostava „${requestedBuildId}“ sa nenašla.`);
       }
-      if (products.motherboards.some((item) => item.id === lastSaved.motherboardId)) {
-        motherboardSelect.value = lastSaved.motherboardId;
+      const selectedBuild = requestedBuild || savedBuilds[savedBuilds.length - 1];
+      if (selectedBuild && products.processors.some((item) => item.id === selectedBuild.processorId)) {
+        processorSelect.value = selectedBuild.processorId;
       }
-      if (products.graphicsCards.some((item) => item.id === lastSaved.graphicsCardId)) {
-        graphicsCardSelect.value = lastSaved.graphicsCardId;
+      if (selectedBuild && products.motherboards.some((item) => item.id === selectedBuild.motherboardId)) {
+        motherboardSelect.value = selectedBuild.motherboardId;
+      }
+      if (selectedBuild && products.graphicsCards.some((item) => item.id === selectedBuild.graphicsCardId)) {
+        graphicsCardSelect.value = selectedBuild.graphicsCardId;
       }
     } else if (savedBuilds !== null && !Array.isArray(savedBuilds)) {
       console.error(`Údaje „${savedBuildsKey}“ nemajú očakávaný formát zoznamu.`);
@@ -625,6 +632,194 @@
     document.getElementById("confirmation-total").textContent = formatPrice(order.celkom);
   }
 
+  function initializeAccountPage() {
+    const savedBuildsList = document.getElementById("saved-builds-list");
+    const ordersList = document.getElementById("orders-list");
+    if (!savedBuildsList || !ordersList) return;
+
+    function showEmptyState(container, message, linkText, href) {
+      const emptyState = document.createElement("div");
+      emptyState.className = "account-empty-state";
+      const text = document.createElement("p");
+      text.textContent = message;
+      const link = document.createElement("a");
+      link.className = "button button-secondary";
+      link.href = href;
+      link.textContent = linkText;
+      emptyState.append(text, link);
+      container.append(emptyState);
+    }
+
+    function renderSavedBuilds() {
+      savedBuildsList.replaceChildren();
+      const savedBuilds = readStorage(savedBuildsKey, []);
+      if (!Array.isArray(savedBuilds)) {
+        console.error(`Údaje „${savedBuildsKey}“ nemajú očakávaný formát zoznamu.`);
+        showEmptyState(savedBuildsList, "Uložené zostavy sa nepodarilo načítať.", "Otvoriť konfigurátor", "konfigurator.html");
+        return;
+      }
+      if (savedBuilds.length === 0) {
+        showEmptyState(savedBuildsList, "Zatiaľ nemáte uloženú žiadnu zostavu. V konfigurátore si môžete zostavu vyskladať a uložiť.", "Otvoriť konfigurátor", "konfigurator.html");
+        return;
+      }
+
+      savedBuilds.forEach((build) => {
+        if (!build || typeof build.id !== "string") {
+          console.error("Neplatná uložená zostava bola vynechaná.", build);
+          return;
+        }
+
+        const card = document.createElement("article");
+        card.className = "account-entry";
+        const details = document.createElement("div");
+        details.className = "account-entry-details";
+        const title = document.createElement("h3");
+        title.textContent = build.nazov || "Vlastná zostava";
+        const description = document.createElement("p");
+        description.textContent = "Procesor, základná doska a grafická karta";
+        details.append(title, description);
+
+        const actions = document.createElement("div");
+        actions.className = "account-entry-actions";
+        const loadLink = document.createElement("a");
+        loadLink.className = "button button-primary";
+        loadLink.href = `konfigurator.html?zostava=${encodeURIComponent(build.id)}`;
+        loadLink.textContent = "Načítať do konfigurátora";
+
+        const deleteButton = document.createElement("button");
+        deleteButton.className = "button button-secondary";
+        deleteButton.type = "button";
+        deleteButton.dataset.deleteBuild = build.id;
+        deleteButton.textContent = "Zmazať";
+        actions.append(loadLink, deleteButton);
+        card.append(details, actions);
+        savedBuildsList.append(card);
+      });
+    }
+
+    function reorderOrder(order) {
+      if (!Array.isArray(order.polozky) || order.polozky.length === 0) {
+        console.error(`Objednávka „${order.cislo}“ neobsahuje platné položky.`);
+        window.alert("Položky tejto objednávky sa nepodarilo načítať.");
+        return;
+      }
+
+      const cart = getCart().map((item) => ({ ...item }));
+      for (const item of order.polozky) {
+        if (!item || typeof item.id !== "string" || typeof item.nazov !== "string") {
+          console.error(`Neplatná položka v objednávke „${order.cislo}“ nebola pridaná.`, item);
+          window.alert("Niektoré položky tejto objednávky sa nepodarilo pridať do košíka.");
+          return;
+        }
+        const quantity = Number(item.mnozstvo);
+        const price = Number(item.cena);
+        const assembly = Number(item.montaz);
+        if (
+          !Number.isFinite(quantity)
+          || quantity < 1
+          || !Number.isFinite(price)
+          || price < 0
+          || !Number.isFinite(assembly)
+          || assembly < 0
+        ) {
+          console.error(`Neplatná položka v objednávke „${order.cislo}“ nebola pridaná.`, item);
+          window.alert("Niektoré položky tejto objednávky sa nepodarilo pridať do košíka.");
+          return;
+        }
+
+        const existing = cart.find((entry) => entry.id === item.id);
+        if (existing) {
+          existing.nazov = item.nazov;
+          existing.cena = price;
+          existing.montaz = assembly;
+          existing.mnozstvo = Math.max(1, Number(existing.mnozstvo) || 1) + quantity;
+        } else {
+          cart.push({
+            id: item.id,
+            nazov: item.nazov,
+            cena: price,
+            montaz: assembly,
+            mnozstvo: quantity
+          });
+        }
+      }
+
+      if (writeStorage(cartKey, cart)) {
+        updateCartCount();
+        window.location.href = "kosik.html";
+      }
+    }
+
+    savedBuildsList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-delete-build]");
+      if (!button) return;
+
+      const savedBuilds = readStorage(savedBuildsKey, []);
+      if (!Array.isArray(savedBuilds)) {
+        console.error(`Údaje „${savedBuildsKey}“ nemajú očakávaný formát zoznamu.`);
+        return;
+      }
+      const updatedBuilds = savedBuilds.filter((build) => !build || build.id !== button.dataset.deleteBuild);
+      if (writeStorage(savedBuildsKey, updatedBuilds)) renderSavedBuilds();
+    });
+
+    const orders = readStorage("pcnm_objednavky", []);
+    if (!Array.isArray(orders)) {
+      console.error("Údaje „pcnm_objednavky“ nemajú očakávaný formát zoznamu.");
+      showEmptyState(ordersList, "Objednávky sa nepodarilo načítať.", "Prejsť do konfigurátora", "konfigurator.html");
+    } else if (orders.length === 0) {
+      showEmptyState(ordersList, "Zatiaľ nemáte žiadnu objednávku. Po dokončení objednávky sa zobrazí v tomto zozname.", "Pozrieť hotové zostavy", "konfigurator.html#hotove-riesenia");
+    } else {
+      [...orders].reverse().forEach((order) => {
+        if (!order || typeof order.cislo !== "string" || !Array.isArray(order.polozky)) {
+          console.error("Neplatná objednávka bola vynechaná.", order);
+          return;
+        }
+
+        const card = document.createElement("article");
+        card.className = "account-entry order-entry";
+        const details = document.createElement("div");
+        details.className = "account-entry-details";
+        const title = document.createElement("h3");
+        title.textContent = `Objednávka ${order.cislo}`;
+        const date = document.createElement("p");
+        const parsedDate = new Date(order.datum);
+        date.textContent = Number.isNaN(parsedDate.getTime())
+          ? "Dátum neuvedený"
+          : new Intl.DateTimeFormat("sk-SK", { dateStyle: "medium" }).format(parsedDate);
+
+        const itemsList = document.createElement("ul");
+        itemsList.className = "order-items-list";
+        order.polozky.forEach((item) => {
+          if (!item || typeof item.nazov !== "string") {
+            console.error(`Neplatná položka v objednávke „${order.cislo}“ bola vynechaná.`, item);
+            return;
+          }
+          const listItem = document.createElement("li");
+          listItem.textContent = `${item.nazov} × ${Number(item.mnozstvo) || 0}`;
+          itemsList.append(listItem);
+        });
+        const total = document.createElement("strong");
+        total.className = "account-order-total";
+        total.textContent = `Celkom: ${formatPrice(Number(order.celkom) || 0)}`;
+        details.append(title, date, itemsList, total);
+
+        const actions = document.createElement("div");
+        actions.className = "account-entry-actions";
+        const reorderButton = document.createElement("button");
+        reorderButton.className = "button button-primary";
+        reorderButton.type = "button";
+        reorderButton.textContent = "Kúpiť znova";
+        reorderButton.addEventListener("click", () => reorderOrder(order));
+        actions.append(reorderButton);
+        card.append(details, actions);
+        ordersList.append(card);
+      });
+    }
+
+    renderSavedBuilds();
+  }
+
   if (!products) {
     console.error("Katalóg produktov sa nenačítal. Skontrolujte cestu k data/produkty.js.");
     return;
@@ -639,4 +834,5 @@
   initializeConfigurator();
   initializeCartPage();
   initializeConfirmationPage();
+  initializeAccountPage();
 })();
