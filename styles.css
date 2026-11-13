@@ -151,6 +151,11 @@ a:focus-visible {
   color: #fff;
 }
 
+.footer-brand .brand-mark {
+  background: #fff;
+  color: var(--color-navy);
+}
+
 .footer-about p {
   max-width: 260px;
   margin: 16px 0 0;
@@ -172,9 +177,13 @@ a:focus-visible {
   font-weight: 600;
 }
 
-.footer-column a {
+.footer-column a,
+.footer-column span {
   color: #cbd5e1;
   font-size: 12px;
+}
+
+.footer-column a {
   text-decoration: none;
 }
 
@@ -353,9 +362,22 @@ a:focus-visible {
 }
 
 .deals-section {
+  width: 100%;
+  margin: 0;
   padding-top: 56px;
-  padding-bottom: 64px;
+  padding-bottom: 32px;
   background: #fff;
+}
+
+.deals-section > .section-heading,
+.deals-section > .deal-grid {
+  width: min(var(--content-width), calc(100% - 48px));
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.section-heading .eyebrow {
+  color: var(--color-blue);
 }
 
 .section-heading {
@@ -483,7 +505,12 @@ a:focus-visible {
 
   .deals-section {
     padding-top: 40px;
-    padding-bottom: 48px;
+    padding-bottom: 24px;
+  }
+
+  .deals-section > .section-heading,
+  .deals-section > .deal-grid {
+    width: min(var(--content-width), calc(100% - 32px));
   }
 }
 
@@ -498,7 +525,7 @@ a:focus-visible {
 }
 
 .categories-section {
-  padding: 56px 0 64px;
+  padding: 40px 0 64px;
   background: #f5f7fa;
 }
 
