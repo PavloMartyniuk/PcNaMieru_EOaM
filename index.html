@@ -6,6 +6,8 @@
   <meta name="theme-color" content="#ffffff">
   <title>PC na mieru</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="data/produkty.js" defer></script>
+  <script src="script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -23,7 +25,7 @@
       </nav>
 
       <div class="header-actions">
-        <a class="header-link" href="kosik.html">Košík</a>
+        <a class="header-link cart-link" href="kosik.html">Košík <span class="cart-count" aria-live="polite">0</span></a>
         <a class="account-link" href="ucet.html">Môj účet</a>
       </div>
     </div>
@@ -53,7 +55,7 @@
       </div>
 
       <div class="deal-grid">
-        <article class="deal-card">
+        <article class="deal-card" data-product-id="studentsky-esport-pc">
           <a class="deal-image" href="konfigurator.html" aria-label="Detail zostavy Študentský e-šport PC">
             <img src="img/akcia1.jpg" alt="Herný počítač a monitor pre študentský e-šport">
           </a>
@@ -66,32 +68,32 @@
             </div>
             <div class="deal-actions">
               <a class="button button-secondary" href="konfigurator.html">Detail</a>
-              <a class="button button-primary" href="konfigurator.html">Kúpiť</a>
+              <a class="button button-primary" href="kosik.html">Kúpiť</a>
             </div>
           </div>
         </article>
 
-        <article class="deal-card">
+        <article class="deal-card" data-product-id="ticha-zostava-grafici">
           <a class="deal-image" href="konfigurator.html" aria-label="Detail zostavy Tichá zostava pre grafikov">
             <img src="img/akcia2.jpg" alt="Tichý počítač s farebným podsvietením pre grafickú prácu">
           </a>
           <div class="deal-content">
             <h3>Tichá zostava pre grafikov</h3>
-            <p>Plynulý výkon pri tvorbe, s tichým chladením a 19 dB v režime pokoja.</p>
+            <p>Tichá pracovná stanica pre grafiku, video a kreatívnu prácu.</p>
             <div class="deal-price-row">
               <strong class="deal-price">1 290 €</strong>
               <span class="stock-badge">Skladom</span>
             </div>
             <div class="deal-actions">
               <a class="button button-secondary" href="konfigurator.html">Detail</a>
-              <a class="button button-primary" href="konfigurator.html">Kúpiť</a>
+              <a class="button button-primary" href="kosik.html">Kúpiť</a>
             </div>
           </div>
         </article>
 
-        <article class="deal-card">
+        <article class="deal-card" data-product-id="office-b2b-pack">
           <a class="deal-image" href="konfigurator.html" aria-label="Detail zostavy Office B2B Pack">
-            <img src="img/akcia3.jpg" alt="Notebook pripravený na prácu v modernej kancelárii">
+            <img src="img/akcia3.jpg" alt="Kancelárska pracovná zostava Office B2B Pack">
           </a>
           <div class="deal-content">
             <h3>Office B2B Pack</h3>
@@ -102,25 +104,25 @@
             </div>
             <div class="deal-actions">
               <a class="button button-secondary" href="konfigurator.html">Detail</a>
-              <a class="button button-primary" href="konfigurator.html">Kúpiť</a>
+              <a class="button button-primary" href="kosik.html">Kúpiť</a>
             </div>
           </div>
         </article>
 
-        <article class="deal-card">
-          <a class="deal-image" href="konfigurator.html" aria-label="Detail grafickej karty RTX 4060">
+        <article class="deal-card" data-product-id="gpu-rtx-4060">
+          <a class="deal-image" href="konfigurator.html" aria-label="Detail grafickej karty GeForce RTX 4060">
             <img src="img/akcia4.jpg" alt="Grafická karta GeForce RTX 4060">
           </a>
           <div class="deal-content">
-            <h3>Nová grafická karta RTX 4060</h3>
-            <p>Spoľahlivý výkon pre moderné hry a tvorbu obsahu.</p>
+            <h3>GeForce RTX 4060</h3>
+            <p>Úsporná grafická karta na hranie vo Full HD a tvorbu obsahu.</p>
             <div class="deal-price-row">
               <strong class="deal-price">399 €</strong>
               <span class="stock-badge">Skladom</span>
             </div>
             <div class="deal-actions">
               <a class="button button-secondary" href="konfigurator.html">Detail</a>
-              <a class="button button-primary" href="konfigurator.html">Kúpiť</a>
+              <a class="button button-primary" href="kosik.html">Kúpiť</a>
             </div>
           </div>
         </article>
