@@ -207,9 +207,33 @@
     const purchaseButton = document.getElementById("add-custom-build");
     const purchaseDisabledReason = document.getElementById("purchase-disabled-reason");
 
-    function populateSelect(select, items, placeholder, optional) {
+    function productOptionLabel(field, item) {
+      const price = formatPrice(item.cena);
+      switch (field.key) {
+        case "processor":
+          return `${item.nazov} · ${item.socket} · ${item.tdp} W · ${price}`;
+        case "motherboard":
+          return `${item.nazov} · ${item.socket} · ${item.ramTyp} · ${item.format} · ${price}`;
+        case "ram":
+          return `${item.nazov} · ${item.typ} · ${item.kapacita} GB · ${price}`;
+        case "graphicsCard":
+          return `${item.nazov} · ${item.tdp} W · ${item.dlzkaMm} mm · ${price}`;
+        case "ssd":
+          return `${item.nazov} · ${item.kapacita >= 1000 ? `${item.kapacita / 1000} TB` : `${item.kapacita} GB`} · ${price}`;
+        case "cooler":
+          return `${item.nazov} · ${item.typ || "Vzduchový"} · ${item.sockety.join("/")} · ${item.vykonTdp} W · ${item.vyskaMm} mm · ${price}`;
+        case "powerSupply":
+          return `${item.nazov} · ${item.vykonW} W · ${price}`;
+        case "computerCase":
+          return `${item.nazov} · ${item.podporovaneFormaty.join("/")} · max GPU ${item.maxDlzkaGpuMm} mm · max chladič ${item.maxVyskaChladicaMm} mm · ${price}`;
+        default:
+          return `${item.nazov} · ${price}`;
+      }
+    }
+
+    function populateSelect(select, field, placeholder) {
       select.replaceChildren();
-      if (optional) {
+      if (field.optional) {
         const noneOption = document.createElement("option");
         noneOption.value = noneValue;
         noneOption.textContent = "Nepotrebujem";
@@ -222,17 +246,17 @@
         select.append(emptyOption);
       }
 
-      items.forEach((item) => {
+      [...field.items].sort((first, second) => first.cena - second.cena).forEach((item) => {
         const option = document.createElement("option");
         option.value = item.id;
-        option.textContent = `${item.nazov} — ${formatPrice(item.cena)}`;
+        option.textContent = productOptionLabel(field, item);
         select.append(option);
       });
     }
 
     componentFields.forEach((field) => {
       const select = selects.get(field.key);
-      populateSelect(select, field.items, `Vyberte ${field.label}`, field.optional);
+      populateSelect(select, field, `Vyberte ${field.label}`);
       if (field.optional) select.value = noneValue;
     });
 
@@ -249,43 +273,43 @@
       return Object.fromEntries(componentFields.map((field) => [field.savedKey, selects.get(field.key).value || ""]));
     }
 
-    function validateCompatibility(selection) {
+    function validateCompatibility(selection, selectedIds = currentSelection()) {
       const problems = [];
-      const addProblem = (key, message) => problems.push({ key, message });
+      const addProblem = (key, message, participants) => problems.push({ key, message, participants });
       const { processor, motherboard, ram, graphicsCard, cooler, powerSupply, computerCase } = selection;
 
       if (processor && motherboard && processor.socket !== motherboard.socket) {
-        addProblem("motherboard", `Procesor je ${processor.socket}, doska ${motherboard.socket}. Zmeňte procesor na model s ${motherboard.socket} alebo dosku na model s ${processor.socket}.`);
+        addProblem("motherboard", `Procesor je ${processor.socket}, doska ${motherboard.socket}. Zmeňte procesor na model s ${motherboard.socket} alebo dosku na model s ${processor.socket}.`, ["processor", "motherboard"]);
       }
       if (ram && motherboard && ram.typ !== motherboard.ramTyp) {
-        addProblem("ram", `Pamäť je ${ram.typ}, doska podporuje ${motherboard.ramTyp}. Vyberte RAM typu ${motherboard.ramTyp} alebo dosku s podporou ${ram.typ}.`);
+        addProblem("ram", `Pamäť je ${ram.typ}, doska podporuje ${motherboard.ramTyp}. Vyberte RAM typu ${motherboard.ramTyp} alebo dosku s podporou ${ram.typ}.`, ["ram", "motherboard"]);
       }
       if (computerCase && motherboard && !computerCase.podporovaneFormaty.includes(motherboard.format)) {
-        addProblem("computerCase", `Skriňa nepodporuje formát dosky ${motherboard.format}. Vyberte skriňu s podporou ${motherboard.format} alebo dosku s podporovaným formátom.`);
+        addProblem("computerCase", `Skriňa nepodporuje formát dosky ${motherboard.format}. Vyberte skriňu s podporou ${motherboard.format} alebo dosku s podporovaným formátom.`, ["computerCase", "motherboard"]);
       }
       if (processor && powerSupply) {
         const neededPower = processor.tdp + (graphicsCard ? graphicsCard.tdp : 0) + 150;
         if (powerSupply.vykonW < neededPower) {
-          addProblem("powerSupply", `Zdroj má ${powerSupply.vykonW} W, zostava potrebuje aspoň ${neededPower} W. Vyberte silnejší zdroj.`);
+          addProblem("powerSupply", `Zdroj má ${powerSupply.vykonW} W, zostava potrebuje aspoň ${neededPower} W. Vyberte silnejší zdroj.`, ["powerSupply", "processor", ...(graphicsCard ? ["graphicsCard"] : [])]);
         }
       }
       if (graphicsCard && computerCase && graphicsCard.dlzkaMm > computerCase.maxDlzkaGpuMm) {
-        addProblem("graphicsCard", `Grafická karta má dĺžku ${graphicsCard.dlzkaMm} mm, skriňa podporuje najviac ${computerCase.maxDlzkaGpuMm} mm. Vyberte kratšiu kartu alebo väčšiu skriňu.`);
+        addProblem("graphicsCard", `Grafická karta má dĺžku ${graphicsCard.dlzkaMm} mm, skriňa podporuje najviac ${computerCase.maxDlzkaGpuMm} mm. Vyberte kratšiu kartu alebo väčšiu skriňu.`, ["graphicsCard", "computerCase"]);
       }
       if (cooler && processor && !cooler.sockety.includes(processor.socket)) {
-        addProblem("cooler", `Chladič nepodporuje socket ${processor.socket}. Vyberte chladič kompatibilný so socketom ${processor.socket}.`);
+        addProblem("cooler", `Chladič nepodporuje socket ${processor.socket}. Vyberte chladič kompatibilný so socketom ${processor.socket}.`, ["cooler", "processor"]);
       }
       if (cooler && computerCase && cooler.vyskaMm > computerCase.maxVyskaChladicaMm) {
-        addProblem("cooler", `Chladič má výšku ${cooler.vyskaMm} mm, skriňa podporuje najviac ${computerCase.maxVyskaChladicaMm} mm. Vyberte nižší chladič alebo väčšiu skriňu.`);
+        addProblem("cooler", `Chladič má výšku ${cooler.vyskaMm} mm, skriňa podporuje najviac ${computerCase.maxVyskaChladicaMm} mm. Vyberte nižší chladič alebo väčšiu skriňu.`, ["cooler", "computerCase"]);
       }
       if (cooler && processor && cooler.vykonTdp < processor.tdp) {
-        addProblem("cooler", `Chladič zvláda ${cooler.vykonTdp} W, procesor má TDP ${processor.tdp} W. Vyberte výkonnejší chladič.`);
+        addProblem("cooler", `Chladič zvláda ${cooler.vykonTdp} W, procesor má TDP ${processor.tdp} W. Vyberte výkonnejší chladič.`, ["cooler", "processor"]);
       }
-      if (processor && selects.get("graphicsCard").value === noneValue && !processor.integrovanaGrafika) {
-        addProblem("graphicsCard", "Procesor nemá integrovanú grafiku. Vyberte grafickú kartu.");
+      if (processor && selectedIds.graphicsCardId === noneValue && !processor.integrovanaGrafika) {
+        addProblem("graphicsCard", "Procesor nemá integrovanú grafiku. Vyberte grafickú kartu.", ["graphicsCard", "processor"]);
       }
-      if (processor && selects.get("cooler").value === noneValue && !processor.chladicVBalení) {
-        addProblem("cooler", "Procesor nemá chladič v balení. Vyberte chladič procesora.");
+      if (processor && selectedIds.coolerId === noneValue && !processor.chladicVBalení) {
+        addProblem("cooler", "Procesor nemá chladič v balení. Vyberte chladič procesora.", ["cooler", "processor"]);
       }
 
       return problems;
@@ -302,6 +326,32 @@
       const assembly = products.customBuild.montaz;
       const complete = missing.length === 0;
       const compatible = problems.length === 0;
+      const selectedIds = currentSelection();
+
+      componentFields.forEach((field) => {
+        const select = selects.get(field.key);
+        const currentValue = select.value;
+        [...select.options].forEach((option) => {
+          if (!option.value) return;
+          if (option.value === noneValue) {
+            const candidateSelection = { ...selection, [field.key]: null };
+            const candidateIds = { ...selectedIds, [field.savedKey]: noneValue };
+            const doesNotFit = validateCompatibility(candidateSelection, candidateIds)
+              .some((problem) => problem.participants.includes(field.key));
+            option.textContent = `Nepotrebujem${doesNotFit ? " (nesedí s výberom)" : ""}`;
+            return;
+          }
+          const item = field.items.find((product) => product.id === option.value);
+          if (!item) return;
+          const candidateSelection = { ...selection, [field.key]: item };
+          const candidateIds = { ...selectedIds, [field.savedKey]: item.id };
+          const doesNotFit = validateCompatibility(candidateSelection, candidateIds)
+            .some((problem) => problem.participants.includes(field.key));
+          const baseLabel = productOptionLabel(field, item);
+          option.textContent = `${baseLabel}${doesNotFit ? " (nesedí s výberom)" : ""}`;
+        });
+        select.value = currentValue;
+      });
 
       partsPrice.textContent = formatPrice(parts);
       assemblyPrice.textContent = formatPrice(assembly);
