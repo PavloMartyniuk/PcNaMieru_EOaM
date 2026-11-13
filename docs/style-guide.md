@@ -27,7 +27,7 @@ Modrá a smaragdová sa používajú ako malé, dobre viditeľné akcenty. Veľk
 
 ## Tlačidlá a interaktívne prvky
 
-- **Primárne tlačidlo:** sýta smaragdová (`#10B981`), biely text, mierne zaoblené rohy. Používa sa pre hlavné akcie, napríklad pokračovanie alebo pridanie do košíka.
+- **Primárne tlačidlo:** výrazná modrá (`#3478F6`), biely text, mierne zaoblené rohy. Používa sa pre hlavné nákupné akcie.
 - **Sekundárne tlačidlo:** výrazná modrá (`#3478F6`) s bielym textom; môže byť vedľa primárnej akcie alebo pri produktových kartách.
 - **Neutrálne akcie:** biele alebo veľmi svetlosivé tlačidlá s jemným sivým okrajom a tmavým textom.
 - Tlačidlá sú skôr kompaktné, s jemným polomerom rohov (približne 4–8 px), nie kapsulovité.

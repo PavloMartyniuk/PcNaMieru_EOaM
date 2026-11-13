@@ -3,33 +3,69 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Moje portfólio — začiatok</title>
-  <!-- Vzhľad stránky je v samostatnom súbore styles.css (vrstva CSS) -->
+  <meta name="theme-color" content="#ffffff">
+  <title>PC na mieru</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="PC na mieru – domov">
+        <span class="brand-mark" aria-hidden="true">PC</span>
+        <span>PC na <strong>mieru</strong></span>
+      </a>
 
-  <main class="uvitanie">
-    <div class="emoji">👋</div>
-    <h1>Tu vznikne moje portfólio</h1>
-    <p class="podtext">
-      Toto je štartová stránka kurzu <strong>Tvorba webstránok</strong>.
-      Odteraz ju budeš meniť ty — s pomocou AI asistenta.
-    </p>
+      <nav class="primary-nav" aria-label="Hlavná navigácia">
+        <a href="index.html" aria-current="page">Domov</a>
+        <a href="konfigurator.html#hotove-riesenia">Obchod</a>
+        <a href="konfigurator.html">Konfigurátor</a>
+        <a href="info.html">Info a pomoc</a>
+      </nav>
 
-    <div class="karta">
-      <p class="karta-nadpis">Ako začať:</p>
-      <ol>
-        <li>Otvor <strong>Copilot Chat</strong> (ikona Copilota vpravo) — sem píšeš, čo chceš vytvoriť.</li>
-        <li>Tento súbor <code>index.html</code> si pozri v <strong>živom náhľade</strong>: pravý klik naň → <em>Show Preview</em>.</li>
-        <li>Choď na <strong>Blok 7</strong> kurzu a postupuj podľa neho.</li>
-      </ol>
+      <div class="header-actions">
+        <a class="header-link" href="kosik.html">Košík</a>
+        <a class="account-link" href="ucet.html">Môj účet</a>
+      </div>
     </div>
+  </header>
 
-    <p class="poznamka">
-      Keď spravíš prvú zmenu, tento text pokojne zmaž — je len na úvod.
-    </p>
+  <main class="page-content">
+    <h1>PC na mieru</h1>
+    <p>Spoločná hlavička a pätička sú pripravené. Obsah domovskej stránky doplníme v ďalšom kroku.</p>
   </main>
 
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <section class="footer-about" aria-labelledby="footer-brand">
+        <a class="brand footer-brand" id="footer-brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">PC</span>
+          <span>PC na <strong>mieru</strong></span>
+        </a>
+        <p>Počítače na mieru, profesionálna montáž a testovanie zostavy.</p>
+      </section>
+
+      <section class="footer-column" aria-labelledby="footer-contact">
+        <h2 id="footer-contact">Kontaktujte nás</h2>
+        <a href="info.html#kontakt">Kontakt a adresa</a>
+        <a href="info.html#kontakt">Napíšte nám</a>
+      </section>
+
+      <section class="footer-column" aria-labelledby="footer-hours">
+        <h2 id="footer-hours">Otváracie hodiny</h2>
+        <a href="info.html#otvaracie-hodiny">Po – Pi: 09:00 – 18:00</a>
+        <a href="info.html#otvaracie-hodiny">Sobota a nedeľa: zatvorené</a>
+      </section>
+
+      <nav class="footer-column" aria-label="Informácie">
+        <h2>Informácie</h2>
+        <a href="info.html#obchodne-podmienky">Obchodné podmienky</a>
+        <a href="info.html#reklamacny-poriadok">Reklamačný poriadok</a>
+        <a href="info.html#ochrana-osobnych-udajov">Ochrana osobných údajov</a>
+        <a href="info.html#doprava-a-platba">Doprava a platba</a>
+        <a href="info.html#b2b-spolupraca">B2B spolupráca</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">© PC na mieru</div>
+  </footer>
 </body>
 </html>

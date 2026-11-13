@@ -1,75 +1,241 @@
-/* Vzhľad štartovej stránky — vrstva CSS (ako stránka vyzerá).
-   Obsah (čo na stránke je) nájdeš v index.html. */
+:root {
+  color-scheme: light;
+  font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #1f2937;
+  background: #f5f7fa;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --color-navy: #1e293b;
+  --color-text-muted: #64748b;
+  --color-blue: #3478f6;
+  --color-green: #10b981;
+  --color-border: #e2e8f0;
+  --content-width: 1200px;
+}
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+  min-width: 320px;
   min-height: 100vh;
+  margin: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  background: #f8fafc;
-  color: #1e293b;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  flex-direction: column;
+  background: #f5f7fa;
   line-height: 1.5;
 }
 
-.uvitanie {
-  max-width: 36rem;
+a {
+  color: inherit;
+}
+
+a:focus-visible {
+  outline: 3px solid var(--color-blue);
+  outline-offset: 3px;
+}
+
+.site-header {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.header-inner {
+  width: min(var(--content-width), calc(100% - 48px));
+  min-height: 64px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.brand {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-navy);
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brand strong {
+  color: var(--color-blue);
+}
+
+.brand-mark {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 6px;
+  background: var(--color-navy);
+  color: #fff;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.primary-nav,
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.primary-nav a,
+.header-link {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.primary-nav a:hover,
+.primary-nav a[aria-current="page"],
+.header-link:hover {
+  color: var(--color-blue);
+}
+
+.account-link {
+  padding: 8px 12px;
+  border-radius: 5px;
+  background: var(--color-navy);
+  color: #fff;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.account-link:hover {
+  background: #334155;
+}
+
+.page-content {
+  width: min(var(--content-width), calc(100% - 48px));
+  flex: 1;
+  margin: 0 auto;
+  padding: 64px 0;
+}
+
+.page-content h1 {
+  margin: 0 0 12px;
+  color: var(--color-navy);
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+}
+
+.page-content p {
+  max-width: 620px;
+  color: var(--color-text-muted);
+}
+
+.site-footer {
+  background: var(--color-navy);
+  color: #fff;
+}
+
+.footer-inner {
+  width: min(var(--content-width), calc(100% - 48px));
+  margin: 0 auto;
+  padding: 48px 0 36px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.footer-brand {
+  color: #fff;
+}
+
+.footer-about p {
+  max-width: 260px;
+  margin: 16px 0 0;
+  color: #cbd5e1;
+  font-size: 13px;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.footer-column h2 {
+  margin: 0 0 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.footer-column a {
+  color: #cbd5e1;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.footer-column a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-bottom {
+  padding: 14px 24px;
+  border-top: 1px solid rgb(255 255 255 / 10%);
+  color: #94a3b8;
+  font-size: 11px;
   text-align: center;
 }
 
-.emoji {
-  font-size: 3rem;
-  margin-bottom: 1rem;
+@media (max-width: 760px) {
+  .header-inner {
+    width: min(100% - 32px, var(--content-width));
+    padding: 12px 0;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+  }
+
+  .primary-nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    overflow-x: auto;
+  }
+
+  .primary-nav a {
+    white-space: nowrap;
+  }
+
+  .header-actions {
+    margin-left: auto;
+    gap: 14px;
+  }
+
+  .page-content {
+    width: min(100% - 32px, var(--content-width));
+    padding: 48px 0;
+  }
+
+  .footer-inner {
+    width: min(100% - 32px, var(--content-width));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 24px;
+  }
 }
 
-h1 {
-  font-size: 1.875rem;
-  margin: 0 0 0.75rem;
-}
+@media (max-width: 440px) {
+  .primary-nav {
+    justify-content: flex-start;
+  }
 
-.podtext {
-  color: #475569;
-  margin: 0 0 1.5rem;
-}
-
-.karta {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  padding: 1.25rem;
-  text-align: left;
-}
-
-.karta-nadpis {
-  font-weight: 600;
-  margin: 0 0 0.5rem;
-}
-
-.karta ol {
-  margin: 0;
-  padding-left: 1.25rem;
-}
-
-.karta li {
-  margin-bottom: 0.25rem;
-  color: #334155;
-}
-
-.karta code {
-  background: #f1f5f9;
-  padding: 0 0.25rem;
-  border-radius: 0.25rem;
-}
-
-.poznamka {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin-top: 1.5rem;
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
 }
