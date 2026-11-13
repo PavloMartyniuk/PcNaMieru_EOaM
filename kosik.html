@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Košík a objednávka — PC na mieru</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data/produkty.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="PC na mieru – domov">
+        <span class="brand-mark" aria-hidden="true">PC</span>
+        <span>PC na <strong>mieru</strong></span>
+      </a>
+      <nav class="primary-nav" aria-label="Hlavná navigácia">
+        <a href="index.html">Domov</a>
+        <a href="konfigurator.html#hotove-riesenia">Obchod</a>
+        <a href="konfigurator.html">Konfigurátor</a>
+        <a href="info.html">Info a pomoc</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-link cart-link" href="kosik.html" aria-current="page">Košík <span class="cart-count" aria-live="polite">0</span></a>
+        <a class="account-link" href="ucet.html">Môj účet</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="checkout-page">
+    <div class="checkout-container">
+      <div class="checkout-heading">
+        <p class="eyebrow eyebrow-green">KOŠÍK / DOKONČENIE OBJEDNÁVKY</p>
+        <h1>Váš košík</h1>
+      </div>
+
+      <aside class="demo-warning" role="note">
+        <strong>Ukážkový projekt</strong> – objednávka sa nikam neodosiela, nezadávajte skutočné osobné údaje.
+      </aside>
+
+      <div id="empty-cart" class="empty-cart" hidden>
+        <h2>Váš košík je zatiaľ prázdny</h2>
+        <p>Vyberte si hotovú zostavu alebo si vyskladajte počítač podľa svojich potrieb.</p>
+        <a class="button button-primary" href="konfigurator.html">Prejsť do konfigurátora</a>
+      </div>
+
+      <div id="checkout-content" class="checkout-layout">
+        <div class="checkout-main-column">
+          <section class="checkout-card cart-items-card" aria-labelledby="cart-items-title">
+            <div class="checkout-card-heading">
+              <h2 id="cart-items-title">Položky v košíku</h2>
+              <span id="cart-item-count" class="muted-text"></span>
+            </div>
+            <div id="cart-items" class="cart-items"></div>
+          </section>
+
+          <form id="checkout-form" class="checkout-form" novalidate>
+            <section class="checkout-card" aria-labelledby="company-details-title">
+              <div class="checkout-card-heading">
+                <h2 id="company-details-title">Firemné údaje</h2>
+              </div>
+              <p class="form-help">IČO a DIČ sú voliteľné. Vyplňte ich iba pri firemnej objednávke; použite výlučne testovacie údaje.</p>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label for="company-ico">IČO</label>
+                  <input id="company-ico" name="ico" type="text" inputmode="numeric" autocomplete="off" maxlength="8" aria-describedby="ico-error" placeholder="8 číslic">
+                  <span class="field-error" id="ico-error" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="company-dic">DIČ</label>
+                  <input id="company-dic" name="dic" type="text" inputmode="numeric" autocomplete="off" maxlength="10" aria-describedby="dic-error" placeholder="10 číslic">
+                  <span class="field-error" id="dic-error" aria-live="polite"></span>
+                </div>
+              </div>
+            </section>
+
+            <section class="checkout-card" aria-labelledby="payment-title">
+              <div class="checkout-card-heading">
+                <h2 id="payment-title">Platba a doprava</h2>
+              </div>
+              <div class="form-field">
+                <label for="payment-method">Spôsob platby</label>
+                <select id="payment-method" name="payment" required aria-describedby="payment-error">
+                  <option value="">Vyberte spôsob platby</option>
+                  <option value="Platba kartou">Platba kartou</option>
+                  <option value="Bankový prevod">Bankový prevod</option>
+                  <option value="Na faktúru">Na faktúru</option>
+                </select>
+                <span class="field-error" id="payment-error" aria-live="polite"></span>
+              </div>
+              <div class="shipping-choice">
+                <span class="shipping-icon" aria-hidden="true">↗</span>
+                <span><strong>Doprava kuriérom</strong><small>Doručenie na adresu</small></span>
+                <strong class="shipping-price">Zadarmo</strong>
+              </div>
+            </section>
+          </form>
+        </div>
+
+        <aside class="order-summary-card" aria-labelledby="order-summary-title">
+          <h2 id="order-summary-title">Súhrn objednávky</h2>
+          <dl class="summary-lines">
+            <div><dt>Medzisúčet</dt><dd id="cart-subtotal">0 €</dd></div>
+            <div><dt>Montáž a testovanie</dt><dd id="cart-assembly">0 €</dd></div>
+            <div class="discount-line"><dt>Množstevná zľava</dt><dd id="cart-discount">0 €</dd></div>
+          </dl>
+          <p id="discount-hint" class="discount-hint">Zľava 10 % pri nákupe aspoň 5 kusov.</p>
+          <div class="summary-total"><span>Celkom</span><strong id="cart-total">0 €</strong></div>
+          <p class="tax-note">Ceny sú uvedené s DPH.</p>
+          <button class="button button-primary checkout-submit" id="place-order" type="submit" form="checkout-form">Odoslať objednávku</button>
+          <p id="checkout-error" class="checkout-error" role="alert" hidden></p>
+          <p class="secure-note">Ukážková objednávka bez skutočnej platby.</p>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <section class="footer-about" aria-labelledby="footer-brand">
+        <a class="brand footer-brand" id="footer-brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">PC</span>
+          <span>PC na <strong>mieru</strong></span>
+        </a>
+        <p>Počítače na mieru, profesionálna montáž a testovanie zostavy.</p>
+      </section>
+      <section class="footer-column" aria-labelledby="footer-contact">
+        <h2 id="footer-contact">Kontaktujte nás</h2>
+        <span>Mlynská 14, Košice</span>
+        <a href="tel:+421900123456">+421 900 123 456</a>
+        <a href="mailto:info@pcnamieru.sk">info@pcnamieru.sk</a>
+      </section>
+      <section class="footer-column" aria-labelledby="footer-hours">
+        <h2 id="footer-hours">Otváracie hodiny</h2>
+        <span>Po – Pi: 09:00 – 18:00</span>
+        <span>So: 10:00 – 14:00</span>
+        <span>Ne: zatvorené</span>
+      </section>
+      <nav class="footer-column" aria-label="Informácie">
+        <h2>Informácie</h2>
+        <a href="info.html#obchodne-podmienky">Obchodné podmienky</a>
+        <a href="info.html#reklamacny-poriadok">Reklamačný poriadok</a>
+        <a href="info.html#ochrana-osobnych-udajov">Ochrana osobných údajov</a>
+        <a href="info.html#doprava-a-platba">Doprava a platba</a>
+        <a href="info.html#b2b-spolupraca">B2B spolupráca</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">© PC na mieru</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Potvrdenie objednávky — PC na mieru</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data/produkty.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="PC na mieru – domov">
+        <span class="brand-mark" aria-hidden="true">PC</span>
+        <span>PC na <strong>mieru</strong></span>
+      </a>
+      <nav class="primary-nav" aria-label="Hlavná navigácia">
+        <a href="index.html">Domov</a>
+        <a href="konfigurator.html#hotove-riesenia">Obchod</a>
+        <a href="konfigurator.html">Konfigurátor</a>
+        <a href="info.html">Info a pomoc</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-link cart-link" href="kosik.html">Košík <span class="cart-count" aria-live="polite">0</span></a>
+        <a class="account-link" href="ucet.html">Môj účet</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="confirmation-page">
+    <section class="confirmation-card" aria-labelledby="confirmation-title">
+      <div class="confirmation-icon" aria-hidden="true">✓</div>
+      <p class="eyebrow eyebrow-green">OBJEDNÁVKA ZAZNAMENANÁ</p>
+      <h1 id="confirmation-title">Ďakujeme za objednávku</h1>
+      <p class="confirmation-lead">Ide o ukážkový projekt. Objednávka sa nikam neodoslala a nebola vykonaná žiadna platba.</p>
+      <div class="confirmation-number">
+        <span>Číslo objednávky</span>
+        <strong id="confirmation-order-number">Načítava sa…</strong>
+      </div>
+      <p id="confirmation-date" class="confirmation-date"></p>
+      <div id="confirmation-items" class="confirmation-items"></div>
+      <dl class="confirmation-breakdown">
+        <div><dt>Medzisúčet</dt><dd id="confirmation-subtotal">0 €</dd></div>
+        <div><dt>Montáž a testovanie</dt><dd id="confirmation-assembly">0 €</dd></div>
+        <div class="confirmation-discount"><dt>Množstevná zľava</dt><dd id="confirmation-discount">0 €</dd></div>
+      </dl>
+      <div class="confirmation-total"><span>Celkom s DPH</span><strong id="confirmation-total">0 €</strong></div>
+      <p id="confirmation-error" class="checkout-error" role="status" hidden></p>
+      <a class="button button-primary" href="index.html">Späť na úvodnú stránku</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <section class="footer-about" aria-labelledby="footer-brand">
+        <a class="brand footer-brand" id="footer-brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">PC</span>
+          <span>PC na <strong>mieru</strong></span>
+        </a>
+        <p>Počítače na mieru, profesionálna montáž a testovanie zostavy.</p>
+      </section>
+      <section class="footer-column" aria-labelledby="footer-contact">
+        <h2 id="footer-contact">Kontaktujte nás</h2>
+        <span>Mlynská 14, Košice</span>
+        <a href="tel:+421900123456">+421 900 123 456</a>
+        <a href="mailto:info@pcnamieru.sk">info@pcnamieru.sk</a>
+      </section>
+      <section class="footer-column" aria-labelledby="footer-hours">
+        <h2 id="footer-hours">Otváracie hodiny</h2>
+        <span>Po – Pi: 09:00 – 18:00</span>
+        <span>So: 10:00 – 14:00</span>
+        <span>Ne: zatvorené</span>
+      </section>
+      <nav class="footer-column" aria-label="Informácie">
+        <h2>Informácie</h2>
+        <a href="info.html#obchodne-podmienky">Obchodné podmienky</a>
+        <a href="info.html#reklamacny-poriadok">Reklamačný poriadok</a>
+        <a href="info.html#ochrana-osobnych-udajov">Ochrana osobných údajov</a>
+        <a href="info.html#doprava-a-platba">Doprava a platba</a>
+        <a href="info.html#b2b-spolupraca">B2B spolupráca</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">© PC na mieru</div>
+  </footer>
+</body>
+</html>

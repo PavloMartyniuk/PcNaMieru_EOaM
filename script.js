@@ -332,13 +332,306 @@
     });
   }
 
+  function initializeCartPage() {
+    const cartContainer = document.getElementById("cart-items");
+    const checkoutForm = document.getElementById("checkout-form");
+    if (!cartContainer || !checkoutForm) return;
+
+    const checkoutContent = document.getElementById("checkout-content");
+    const emptyCart = document.getElementById("empty-cart");
+    const itemCount = document.getElementById("cart-item-count");
+    const subtotalElement = document.getElementById("cart-subtotal");
+    const assemblyElement = document.getElementById("cart-assembly");
+    const discountElement = document.getElementById("cart-discount");
+    const discountHint = document.getElementById("discount-hint");
+    const totalElement = document.getElementById("cart-total");
+    const checkoutError = document.getElementById("checkout-error");
+    const icoInput = document.getElementById("company-ico");
+    const dicInput = document.getElementById("company-dic");
+    const paymentSelect = document.getElementById("payment-method");
+
+    function currentCart() {
+      return getCart().filter((item) => {
+        const valid = item
+          && typeof item.id === "string"
+          && typeof item.nazov === "string"
+          && Number.isFinite(Number(item.cena))
+          && Number(item.cena) >= 0
+          && Number.isFinite(Number(item.montaz))
+          && Number(item.montaz) >= 0
+          && Number.isInteger(Number(item.mnozstvo))
+          && Number(item.mnozstvo) > 0;
+        if (!valid) console.error("Neplatná položka v košíku bola vynechaná.", item);
+        return valid;
+      }).map((item) => ({
+        ...item,
+        cena: Number(item.cena),
+        montaz: Number(item.montaz),
+        mnozstvo: Number(item.mnozstvo)
+      }));
+    }
+
+    function calculateTotals(cart) {
+      const quantity = cart.reduce((sum, item) => sum + item.mnozstvo, 0);
+      const subtotal = cart.reduce((sum, item) => sum + item.cena * item.mnozstvo, 0);
+      const assembly = cart.reduce((sum, item) => sum + item.montaz * item.mnozstvo, 0);
+      const discount = quantity >= 5 ? Math.round(subtotal * 0.1 * 100) / 100 : 0;
+      return {
+        quantity,
+        subtotal,
+        assembly,
+        discount,
+        total: subtotal + assembly - discount
+      };
+    }
+
+    function renderCart() {
+      const cart = currentCart();
+      const totals = calculateTotals(cart);
+      cartContainer.replaceChildren();
+      itemCount.textContent = `${totals.quantity} ${totals.quantity === 1 ? "kus" : "kusov"}`;
+
+      cart.forEach((item) => {
+        const row = document.createElement("article");
+        row.className = "cart-item";
+
+        const product = findProduct(item.id);
+        const imageArea = document.createElement("div");
+        imageArea.className = "cart-item-image";
+        if (product && product.obrazok) {
+          const image = document.createElement("img");
+          image.src = product.obrazok;
+          image.alt = product.alt || product.nazov;
+          imageArea.append(image);
+        } else {
+          imageArea.textContent = "PC";
+          imageArea.setAttribute("aria-label", "Vlastná zostava");
+        }
+
+        const details = document.createElement("div");
+        details.className = "cart-item-details";
+        const title = document.createElement("h3");
+        title.textContent = item.nazov;
+        const unitPrice = document.createElement("p");
+        unitPrice.textContent = `${formatPrice(item.cena)} za kus`;
+        details.append(title, unitPrice);
+
+        const controls = document.createElement("div");
+        controls.className = "quantity-controls";
+        controls.setAttribute("aria-label", `Množstvo produktu ${item.nazov}`);
+        const decrease = document.createElement("button");
+        decrease.type = "button";
+        decrease.className = "quantity-button";
+        decrease.dataset.cartAction = "decrease";
+        decrease.dataset.itemId = item.id;
+        decrease.setAttribute("aria-label", `Znížiť množstvo: ${item.nazov}`);
+        decrease.textContent = "−";
+        const quantity = document.createElement("span");
+        quantity.className = "quantity-value";
+        quantity.textContent = String(item.mnozstvo);
+        quantity.setAttribute("aria-live", "polite");
+        const increase = document.createElement("button");
+        increase.type = "button";
+        increase.className = "quantity-button";
+        increase.dataset.cartAction = "increase";
+        increase.dataset.itemId = item.id;
+        increase.setAttribute("aria-label", `Zvýšiť množstvo: ${item.nazov}`);
+        increase.textContent = "+";
+        controls.append(decrease, quantity, increase);
+
+        const lineTotal = document.createElement("strong");
+        lineTotal.className = "cart-line-total";
+        lineTotal.textContent = formatPrice((item.cena + item.montaz) * item.mnozstvo);
+
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "remove-item-button";
+        remove.dataset.cartAction = "remove";
+        remove.dataset.itemId = item.id;
+        remove.textContent = "Odstrániť";
+        remove.setAttribute("aria-label", `Odstrániť z košíka: ${item.nazov}`);
+
+        row.append(imageArea, details, controls, lineTotal, remove);
+        cartContainer.append(row);
+      });
+
+      checkoutContent.hidden = cart.length === 0;
+      emptyCart.hidden = cart.length !== 0;
+      subtotalElement.textContent = formatPrice(totals.subtotal);
+      assemblyElement.textContent = formatPrice(totals.assembly);
+      discountElement.textContent = totals.discount > 0 ? `−${formatPrice(totals.discount)}` : formatPrice(0);
+      totalElement.textContent = formatPrice(totals.total);
+      discountHint.textContent = totals.quantity >= 5
+        ? "Množstevná zľava 10 % bola odpočítaná."
+        : `Do zľavy 10 % vám chýba ${5 - totals.quantity} ${5 - totals.quantity === 1 ? "kus" : "kusy"}.`;
+      updateCartCount();
+      return { cart, totals };
+    }
+
+    cartContainer.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-cart-action]");
+      if (!button) return;
+
+      const action = button.dataset.cartAction;
+      const itemId = button.dataset.itemId;
+      const cart = currentCart();
+      const item = cart.find((entry) => entry.id === itemId);
+      if (!item) return;
+
+      let updated;
+      if (action === "remove") {
+        updated = cart.filter((entry) => entry.id !== itemId);
+      } else {
+        updated = cart.map((entry) => {
+          if (entry.id !== itemId) return entry;
+          const change = action === "increase" ? 1 : -1;
+          return { ...entry, mnozstvo: Math.max(1, entry.mnozstvo + change) };
+        });
+      }
+
+      if (writeStorage(cartKey, updated)) renderCart();
+    });
+
+    function setError(input, errorElement, message) {
+      errorElement.textContent = message;
+      input.setAttribute("aria-invalid", message ? "true" : "false");
+    }
+
+    checkoutForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      checkoutError.hidden = true;
+      checkoutError.textContent = "";
+
+      const ico = icoInput.value.trim();
+      const dic = dicInput.value.trim();
+      const payment = paymentSelect.value;
+      const icoError = document.getElementById("ico-error");
+      const dicError = document.getElementById("dic-error");
+      const paymentError = document.getElementById("payment-error");
+      const errors = [];
+
+      setError(icoInput, icoError, ico && !/^[0-9]{8}$/.test(ico) ? "IČO musí obsahovať presne 8 číslic." : "");
+      setError(dicInput, dicError, dic && !/^[0-9]{10}$/.test(dic) ? "DIČ musí obsahovať presne 10 číslic." : "");
+      setError(paymentSelect, paymentError, payment ? "" : "Vyberte spôsob platby.");
+
+      if (ico && !/^[0-9]{8}$/.test(ico)) errors.push(icoError.textContent);
+      if (dic && !/^[0-9]{10}$/.test(dic)) errors.push(dicError.textContent);
+      if (!payment) errors.push(paymentError.textContent);
+
+      const { cart, totals } = renderCart();
+      if (cart.length === 0) {
+        checkoutError.textContent = "Košík je prázdny. Vyberte si najprv zostavu alebo komponent.";
+        checkoutError.hidden = false;
+        return;
+      }
+      if (errors.length > 0) {
+        checkoutError.textContent = "Skontrolujte označené údaje a vyberte spôsob platby.";
+        checkoutError.hidden = false;
+        const invalidField = [icoInput, dicInput, paymentSelect].find((field) => field.getAttribute("aria-invalid") === "true");
+        invalidField?.focus();
+        return;
+      }
+
+      const date = new Date();
+      const number = `PCNM-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
+      const order = {
+        cislo: number,
+        datum: date.toISOString(),
+        polozky: cart.map(({ id, nazov, cena, montaz, mnozstvo }) => ({ id, nazov, cena, montaz, mnozstvo })),
+        medzisucet: totals.subtotal,
+        montaz: totals.assembly,
+        zlava: totals.discount,
+        celkom: totals.total,
+        platba: payment,
+        doprava: "Kuriér"
+      };
+      const previousOrders = readStorage("pcnm_objednavky", []);
+      if (!Array.isArray(previousOrders)) {
+        console.error("Údaje „pcnm_objednavky“ nemajú očakávaný formát zoznamu.");
+        checkoutError.textContent = "Históriu objednávok sa nepodarilo načítať. Objednávka nebola zaznamenaná.";
+        checkoutError.hidden = false;
+        return;
+      }
+      if (!writeStorage("pcnm_objednavky", [...previousOrders, order])) return;
+      if (!writeStorage(cartKey, [])) {
+        checkoutError.textContent = "Objednávka bola zaznamenaná, ale košík sa nepodarilo vyprázdniť.";
+        checkoutError.hidden = false;
+        return;
+      }
+      window.location.href = `potvrdenie.html?cislo=${encodeURIComponent(number)}`;
+    });
+
+    [icoInput, dicInput].forEach((input) => {
+      input.addEventListener("input", () => {
+        const errorElement = document.getElementById(input.id === "company-ico" ? "ico-error" : "dic-error");
+        setError(input, errorElement, "");
+        checkoutError.hidden = true;
+      });
+    });
+    paymentSelect.addEventListener("change", () => {
+      setError(paymentSelect, document.getElementById("payment-error"), "");
+      checkoutError.hidden = true;
+    });
+
+    renderCart();
+  }
+
+  function initializeConfirmationPage() {
+    const orderNumber = document.getElementById("confirmation-order-number");
+    if (!orderNumber) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const requestedNumber = params.get("cislo");
+    const orders = readStorage("pcnm_objednavky", []);
+    const error = document.getElementById("confirmation-error");
+    const order = Array.isArray(orders)
+      ? orders.find((entry) => entry.cislo === requestedNumber)
+      : null;
+
+    if (!order) {
+      orderNumber.textContent = "Objednávka sa nenašla";
+      error.textContent = "Potvrdenie sa nenašlo v tomto prehliadači. Objednávky sa ukladajú iba lokálne.";
+      error.hidden = false;
+      return;
+    }
+
+    orderNumber.textContent = order.cislo;
+    document.getElementById("confirmation-date").textContent = new Intl.DateTimeFormat("sk-SK", {
+      dateStyle: "long",
+      timeStyle: "short"
+    }).format(new Date(order.datum));
+
+    const itemsContainer = document.getElementById("confirmation-items");
+    order.polozky.forEach((item) => {
+      const row = document.createElement("div");
+      row.className = "confirmation-item";
+      const label = document.createElement("span");
+      label.textContent = `${item.nazov} × ${item.mnozstvo}`;
+      const price = document.createElement("strong");
+      price.textContent = formatPrice((item.cena + item.montaz) * item.mnozstvo);
+      row.append(label, price);
+      itemsContainer.append(row);
+    });
+    document.getElementById("confirmation-subtotal").textContent = formatPrice(order.medzisucet);
+    document.getElementById("confirmation-assembly").textContent = formatPrice(order.montaz);
+    document.getElementById("confirmation-discount").textContent = order.zlava > 0
+      ? `−${formatPrice(order.zlava)}`
+      : formatPrice(0);
+    document.getElementById("confirmation-total").textContent = formatPrice(order.celkom);
+  }
+
   if (!products) {
     console.error("Katalóg produktov sa nenačítal. Skontrolujte cestu k data/produkty.js.");
     return;
   }
 
   updateCartCount();
+  window.addEventListener("storage", (event) => {
+    if (event.key === cartKey) updateCartCount();
+  });
   document.addEventListener("click", handleBuyClick);
   initializeHomeDeals();
   initializeConfigurator();
+  initializeCartPage();
+  initializeConfirmationPage();
 })();
