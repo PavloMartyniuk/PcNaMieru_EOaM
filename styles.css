@@ -231,7 +231,9 @@ a:focus-visible {
 
 @media (max-width: 440px) {
   .primary-nav {
-    justify-content: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: visible;
   }
 
   .footer-inner {
