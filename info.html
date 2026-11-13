@@ -7,13 +7,14 @@
   <title>Info a pomoc — PC na mieru</title>
   <link rel="stylesheet" href="styles.css">
   <script src="data/produkty.js" defer></script>
+  <script src="data/recenzie.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="index.html" aria-label="PC na mieru – domov">
-        <span class="brand-mark" aria-hidden="true">PC</span>
+        <img class="brand-logo" src="img/pclogo.png" alt="PC na mieru">
         <span>PC na <strong>mieru</strong></span>
       </a>
       <nav class="primary-nav" aria-label="Hlavná navigácia">
@@ -76,7 +77,7 @@
           <h2 id="about-title">O nás</h2>
         </div>
         <div class="info-card">
-          <p>PC na mieru je ukážkový projekt počítačového obchodu. Predstavuje výber komponentov, kontrolu kompatibility a prehľad objednávky v jednom jednoduchom rozhraní.</p>
+          <p>Sme projekt nadšencov pre nadšencov, ktorých baví skladať počítače podľa skutočných potrieb. Ku každému zákazníkovi pristupujeme individuálne a pri výbere ponúkame osobné poradenstvo. Naším cieľom je priniesť lepšiu cenu než vo veľkých obchodoch bez zbytočných kompromisov. Každú zostavu profesionálne montujeme, dôkladne testujeme a starostlivo pri nej usporadúvame káble. Na celú zostavu poskytujeme jednu 36-mesačnú záruku. Naše sídlo nájdete na adrese Mlynská 14, Košice. Táto stránka je ukážkový projekt a objednávky sa cez ňu neodosielajú.</p>
         </div>
       </section>
 
@@ -85,23 +86,7 @@
           <p class="eyebrow eyebrow-green">SKÚSENOSTI ZÁKAZNÍKOV</p>
           <h2 id="reviews-title">Recenzie</h2>
         </div>
-        <div class="review-grid">
-          <article class="info-card review-card">
-            <p class="review-label">Ukážková recenzia</p>
-            <blockquote>„Konfigurátor mi pomohol rýchlo skontrolovať, či vybrané diely pasujú.“</blockquote>
-            <p class="review-author">Marek, ukážkový zákazník</p>
-          </article>
-          <article class="info-card review-card">
-            <p class="review-label">Ukážková recenzia</p>
-            <blockquote>„Hotová zostava má prehľadnú cenu a všetky dôležité informácie na jednom mieste.“</blockquote>
-            <p class="review-author">Lucia, ukážková zákazníčka</p>
-          </article>
-          <article class="info-card review-card">
-            <p class="review-label">Ukážková recenzia</p>
-            <blockquote>„Firemná ponuka je zrozumiteľná a jednoducho sa v nej orientuje.“</blockquote>
-            <p class="review-author">Peter, ukážkový zákazník</p>
-          </article>
-        </div>
+        <div class="review-grid" data-reviews-list></div>
       </section>
 
       <section class="info-section" id="kontakt" aria-labelledby="contact-title">
@@ -125,7 +110,7 @@
           <h2 id="delivery-title">Doručenie</h2>
         </div>
         <div class="info-card">
-          <p>Ukážkový spôsob doručenia je kuriérom na adresu. Dostupnosť a termín doručenia sa v tomto prototype nepotvrdzujú.</p>
+          <p>Doručenie počítačovej zostavy kuriérom na adresu je v tomto projekte zadarmo. Orientačný termín doručenia je do 3 pracovných dní. Pred odoslaním zostavu otestujeme, pričom testovanie trvá do 48 hodín. Vlastná zostava sa montuje za 39 €.</p>
         </div>
       </section>
 
@@ -135,7 +120,7 @@
           <h2 id="b2b-title">B2B spolupráca</h2>
         </div>
         <div class="info-card">
-          <p>Ukážková firemná ponuka Office B2B Pack stojí 490 €. Pri objednávke aspoň 5 kusov sa uplatňuje množstevná zľava 10 %; skutočná ponuka sa týmto nepotvrdzuje.</p>
+          <p>Firmám ponúkame ukážkový Office B2B Pack za 490 € za kus. Pri objednávke aspoň 5 kusov sa uplatňuje množstevná zľava −10 %. K firemnej objednávke možno vystaviť faktúru s údajmi IČO a DIČ. V tomto prototype sa objednávka ani faktúra v skutočnosti nevystaví.</p>
         </div>
       </section>
 
@@ -145,7 +130,7 @@
           <h2 id="terms-title">Obchodné podmienky</h2>
         </div>
         <div class="info-card">
-          <p>Tento web je ukážkový statický projekt, nie internetový obchod. Objednávky sa neodosielajú, platby sa nevykonávajú a uvedené údaje ani ceny nie sú záväznou ponukou.</p>
+          <p><strong>Ukážkový text:</strong> Táto stránka predstavuje statický projekt a nie je skutočným internetovým obchodom. Zobrazené ceny, dostupnosť a termíny sú informatívne a nevzniká nimi záväzná objednávka. Objednávky sa nikam neodosielajú a platby sa nevykonávajú.</p>
         </div>
       </section>
 
@@ -155,7 +140,7 @@
           <h2 id="claims-title">Reklamačný poriadok</h2>
         </div>
         <div class="info-card">
-          <p>Keďže ide o ukážkový projekt bez predaja, reklamácie sa tu neprijímajú. Text slúži iba ako miesto pre budúce informácie o reklamačnom postupe.</p>
+          <p><strong>Ukážkový text:</strong> V tomto projekte sa tovar nepredáva, preto cez stránku nemožno uplatniť reklamáciu. Pri reálnom nákupe by sa postup reklamácie dohodol priamo s predajcom. Na zostavy je v ukážkovom zadaní uvedená jedna 36-mesačná záruka.</p>
         </div>
       </section>
 
@@ -165,7 +150,7 @@
           <h2 id="privacy-title">Ochrana údajov</h2>
         </div>
         <div class="info-card">
-          <p>Stránka neodosiela objednávky na server. Ukážkové zostavy a objednávky sa ukladajú v localStorage vášho prehliadača; môžete ich odstrániť vymazaním jeho uložených údajov.</p>
+          <p><strong>Ukážkový text:</strong> Stránka neodosiela objednávky ani kontaktné údaje na server. Uložené zostavy a ukážkové objednávky sa uchovávajú iba v localStorage vášho prehliadača. Údaje môžete odstrániť vymazaním lokálneho úložiska stránky v nastaveniach prehliadača.</p>
         </div>
       </section>
 
@@ -175,7 +160,7 @@
           <h2 id="shipping-payment-title">Doprava a platba</h2>
         </div>
         <div class="info-card">
-          <p>V košíku sú zobrazené ukážkové možnosti platby kartou, bankovým prevodom alebo na faktúru a doprava kuriérom. Nezadávajte skutočné platobné ani osobné údaje — nič sa nespracúva ani neodosiela.</p>
+          <p>Doručenie kuriérom na adresu je v ukážke zadarmo a orientačne trvá do 3 pracovných dní. Zostava sa pred expedíciou testuje do 48 hodín; montáž vlastnej zostavy stojí 39 €. Dostupné ukážkové spôsoby platby sú kartou, bankovým prevodom alebo na faktúru s IČO a DIČ. Nezadávajte skutočné platobné ani osobné údaje — údaje kupujúceho sa neukladajú ani neodosielajú.</p>
         </div>
       </section>
     </div>
@@ -185,7 +170,7 @@
     <div class="footer-inner">
       <section class="footer-about" aria-labelledby="footer-brand">
         <a class="brand footer-brand" id="footer-brand" href="index.html">
-          <span class="brand-mark" aria-hidden="true">PC</span>
+          <img class="brand-logo" src="img/pclogo.png" alt="PC na mieru">
           <span>PC na <strong>mieru</strong></span>
         </a>
         <p>Počítače na mieru, profesionálna montáž a testovanie zostavy.</p>

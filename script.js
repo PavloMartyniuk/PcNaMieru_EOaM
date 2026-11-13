@@ -119,6 +119,45 @@
     });
   }
 
+  function initializeReviews() {
+    const containers = document.querySelectorAll("[data-reviews-list]");
+    if (containers.length === 0) return;
+
+    const reviews = window.PCNM_REVIEWS;
+    if (!Array.isArray(reviews)) {
+      console.error("Recenzie sa nenačítali. Skontrolujte cestu k data/recenzie.js.");
+      return;
+    }
+
+    containers.forEach((container) => {
+      container.replaceChildren();
+      reviews.forEach((review) => {
+        const card = document.createElement("article");
+        card.className = "info-card review-card";
+
+        const badge = document.createElement("p");
+        badge.className = "review-label";
+        badge.textContent = "Ukážková recenzia";
+
+        const stars = document.createElement("p");
+        stars.className = "review-stars";
+        stars.textContent = "★★★★★";
+        stars.setAttribute("role", "img");
+        stars.setAttribute("aria-label", "5 hviezdičiek z 5");
+
+        const quote = document.createElement("blockquote");
+        quote.textContent = `„${review.text}“`;
+
+        const author = document.createElement("p");
+        author.className = "review-author";
+        author.textContent = review.meno;
+
+        card.append(badge, stars, quote, author);
+        container.append(card);
+      });
+    });
+  }
+
   function handleBuyClick(event) {
     const button = event.target.closest("[data-add-to-cart]");
     if (!button) return;
@@ -360,9 +399,18 @@
     const discountHint = document.getElementById("discount-hint");
     const totalElement = document.getElementById("cart-total");
     const checkoutError = document.getElementById("checkout-error");
+    const buyerInputs = [
+      { input: document.getElementById("buyer-name"), message: "Zadajte meno a priezvisko." },
+      { input: document.getElementById("buyer-email"), message: "Zadajte platnú e-mailovú adresu.", validate: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) },
+      { input: document.getElementById("buyer-phone"), message: "Zadajte telefón v slovenskom tvare, napr. +421900123456 alebo 0900123456.", validate: (value) => /^(?:\+421[0-9]{9}|0[0-9]{9})$/.test(value.replace(/\s+/g, "")) },
+      { input: document.getElementById("buyer-street"), message: "Zadajte ulicu a číslo." },
+      { input: document.getElementById("buyer-city"), message: "Zadajte mesto." },
+      { input: document.getElementById("buyer-postal-code"), message: "PSČ musí obsahovať presne 5 číslic.", validate: (value) => /^[0-9]{5}$/.test(value) }
+    ];
     const icoInput = document.getElementById("company-ico");
     const dicInput = document.getElementById("company-dic");
     const paymentSelect = document.getElementById("payment-method");
+    const termsCheckbox = document.getElementById("terms-consent");
 
     function currentCart() {
       return getCart().filter((item) => {
@@ -520,15 +568,28 @@
       const icoError = document.getElementById("ico-error");
       const dicError = document.getElementById("dic-error");
       const paymentError = document.getElementById("payment-error");
+      const termsError = document.getElementById("terms-error");
       const errors = [];
+
+      const invalidFields = [];
+      buyerInputs.forEach(({ input, message, validate }) => {
+        const value = input.value.trim();
+        const valid = value && (!validate || validate(value));
+        const errorElement = document.getElementById(`${input.id}-error`);
+        setError(input, errorElement, valid ? "" : message);
+        if (!valid) invalidFields.push(input);
+      });
 
       setError(icoInput, icoError, ico && !/^[0-9]{8}$/.test(ico) ? "IČO musí obsahovať presne 8 číslic." : "");
       setError(dicInput, dicError, dic && !/^[0-9]{10}$/.test(dic) ? "DIČ musí obsahovať presne 10 číslic." : "");
       setError(paymentSelect, paymentError, payment ? "" : "Vyberte spôsob platby.");
+      setError(termsCheckbox, termsError, termsCheckbox.checked ? "" : "Pre pokračovanie potvrďte súhlas s obchodnými podmienkami.");
 
+      if (!payment) invalidFields.push(paymentSelect);
       if (ico && !/^[0-9]{8}$/.test(ico)) errors.push(icoError.textContent);
       if (dic && !/^[0-9]{10}$/.test(dic)) errors.push(dicError.textContent);
-      if (!payment) errors.push(paymentError.textContent);
+      if (!termsCheckbox.checked) invalidFields.push(termsCheckbox);
+      if (invalidFields.length > 0) errors.push("Skontrolujte označené údaje.");
 
       const { cart, totals } = renderCart();
       if (cart.length === 0) {
@@ -537,9 +598,12 @@
         return;
       }
       if (errors.length > 0) {
-        checkoutError.textContent = "Skontrolujte označené údaje a vyberte spôsob platby.";
+        checkoutError.textContent = "Skontrolujte označené údaje a vyplňte povinné polia.";
         checkoutError.hidden = false;
-        const invalidField = [icoInput, dicInput, paymentSelect].find((field) => field.getAttribute("aria-invalid") === "true");
+        const invalidField = [
+          ...invalidFields,
+          ...[icoInput, dicInput].filter((field) => field.getAttribute("aria-invalid") === "true")
+        ][0];
         invalidField?.focus();
         return;
       }
@@ -583,6 +647,13 @@
     paymentSelect.addEventListener("change", () => {
       setError(paymentSelect, document.getElementById("payment-error"), "");
       checkoutError.hidden = true;
+    });
+    [...buyerInputs.map(({ input }) => input), termsCheckbox].forEach((input) => {
+      input.addEventListener(input === termsCheckbox ? "change" : "input", () => {
+        const errorElement = document.getElementById(input === termsCheckbox ? "terms-error" : `${input.id}-error`);
+        setError(input, errorElement, "");
+        checkoutError.hidden = true;
+      });
     });
 
     renderCart();
@@ -831,6 +902,7 @@
   });
   document.addEventListener("click", handleBuyClick);
   initializeHomeDeals();
+  initializeReviews();
   initializeConfigurator();
   initializeCartPage();
   initializeConfirmationPage();

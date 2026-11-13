@@ -13,7 +13,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a class="brand" href="index.html" aria-label="PC na mieru – domov">
-        <span class="brand-mark" aria-hidden="true">PC</span>
+        <img class="brand-logo" src="img/pclogo.png" alt="PC na mieru">
         <span>PC na <strong>mieru</strong></span>
       </a>
       <nav class="primary-nav" aria-label="Hlavná navigácia">
@@ -42,7 +42,7 @@
       </div>
 
       <aside class="demo-warning" role="note">
-        <strong>Ukážkový projekt</strong> – objednávka sa nikam neodosiela, nezadávajte skutočné osobné údaje.
+        <strong>Ukážkový projekt</strong> – nezadávajte skutočné osobné údaje. Objednávka sa nikam neodosiela.
       </aside>
 
       <div id="empty-cart" class="empty-cart" hidden>
@@ -62,6 +62,72 @@
           </section>
 
           <form id="checkout-form" class="checkout-form" novalidate>
+            <section class="checkout-card" aria-labelledby="payment-title">
+              <div class="checkout-card-heading">
+                <h2 id="payment-title">Platba a doprava</h2>
+              </div>
+              <h3 class="checkout-subheading">Údaje o kupujúcom</h3>
+              <p class="demo-warning buyer-demo-warning" role="note">Ukážkový projekt – nezadávajte skutočné osobné údaje.</p>
+              <div class="form-grid buyer-form-grid">
+                <div class="form-field">
+                  <label for="buyer-name">Meno a priezvisko</label>
+                  <input id="buyer-name" name="buyerName" type="text" autocomplete="name" required aria-describedby="buyer-name-help buyer-name-error" placeholder="Zadajte meno a priezvisko">
+                  <small class="input-hint" id="buyer-name-help">Povinný údaj</small>
+                  <span class="field-error" id="buyer-name-error" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="buyer-email">E-mail</label>
+                  <input id="buyer-email" name="buyerEmail" type="email" autocomplete="email" required aria-describedby="buyer-email-help buyer-email-error" placeholder="meno@priklad.sk">
+                  <small class="input-hint" id="buyer-email-help">Napr. meno@priklad.sk</small>
+                  <span class="field-error" id="buyer-email-error" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="buyer-phone">Telefón</label>
+                  <input id="buyer-phone" name="buyerPhone" type="tel" autocomplete="tel" required aria-describedby="buyer-phone-help buyer-phone-error" placeholder="+421900123456">
+                  <small class="input-hint" id="buyer-phone-help">Napr. +421900123456 alebo 0900123456</small>
+                  <span class="field-error" id="buyer-phone-error" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="buyer-street">Ulica a číslo</label>
+                  <input id="buyer-street" name="buyerStreet" type="text" autocomplete="street-address" required aria-describedby="buyer-street-help buyer-street-error" placeholder="Napr. Hlavná 1">
+                  <small class="input-hint" id="buyer-street-help">Ulica a číslo domu</small>
+                  <span class="field-error" id="buyer-street-error" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="buyer-city">Mesto</label>
+                  <input id="buyer-city" name="buyerCity" type="text" autocomplete="address-level2" required aria-describedby="buyer-city-help buyer-city-error" placeholder="Zadajte mesto">
+                  <small class="input-hint" id="buyer-city-help">Mesto doručenia</small>
+                  <span class="field-error" id="buyer-city-error" aria-live="polite"></span>
+                </div>
+                <div class="form-field">
+                  <label for="buyer-postal-code">PSČ</label>
+                  <input id="buyer-postal-code" name="buyerPostalCode" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" required aria-describedby="buyer-postal-code-help buyer-postal-code-error" placeholder="Napr. 04001">
+                  <small class="input-hint" id="buyer-postal-code-help">Presne 5 číslic</small>
+                  <span class="field-error" id="buyer-postal-code-error" aria-live="polite"></span>
+                </div>
+              </div>
+              <h3 class="checkout-subheading checkout-subheading-spaced">Spôsob platby</h3>
+              <div class="form-field">
+                <label for="payment-method">Vyberte spôsob platby</label>
+                <select id="payment-method" name="payment" required aria-describedby="payment-error">
+                  <option value="">Vyberte spôsob platby</option>
+                  <option value="Platba kartou">Platba kartou</option>
+                  <option value="Bankový prevod">Bankový prevod</option>
+                  <option value="Na faktúru">Na faktúru</option>
+                </select>
+                <span class="field-error" id="payment-error" aria-live="polite"></span>
+              </div>
+              <div class="shipping-choice">
+                <span><strong>Doprava kuriérom</strong><small>Doručenie na adresu</small></span>
+                <strong class="shipping-price">Zadarmo</strong>
+              </div>
+              <div class="terms-consent">
+                <input id="terms-consent" name="termsConsent" type="checkbox" required aria-describedby="terms-error">
+                <label for="terms-consent">Súhlasím s <a href="info.html#obchodne-podmienky">obchodnými podmienkami</a>.</label>
+              </div>
+              <span class="field-error terms-error" id="terms-error" aria-live="polite"></span>
+            </section>
+
             <section class="checkout-card" aria-labelledby="company-details-title">
               <div class="checkout-card-heading">
                 <h2 id="company-details-title">Firemné údaje</h2>
@@ -80,26 +146,6 @@
                   <small class="input-hint" id="dic-help">10 číslic</small>
                   <span class="field-error" id="dic-error" aria-live="polite"></span>
                 </div>
-              </div>
-            </section>
-
-            <section class="checkout-card" aria-labelledby="payment-title">
-              <div class="checkout-card-heading">
-                <h2 id="payment-title">Platba a doprava</h2>
-              </div>
-              <div class="form-field">
-                <label for="payment-method">Spôsob platby</label>
-                <select id="payment-method" name="payment" required aria-describedby="payment-error">
-                  <option value="">Vyberte spôsob platby</option>
-                  <option value="Platba kartou">Platba kartou</option>
-                  <option value="Bankový prevod">Bankový prevod</option>
-                  <option value="Na faktúru">Na faktúru</option>
-                </select>
-                <span class="field-error" id="payment-error" aria-live="polite"></span>
-              </div>
-              <div class="shipping-choice">
-                <span><strong>Doprava kuriérom</strong><small>Doručenie na adresu</small></span>
-                <strong class="shipping-price">Zadarmo</strong>
               </div>
             </section>
           </form>
@@ -127,7 +173,7 @@
     <div class="footer-inner">
       <section class="footer-about" aria-labelledby="footer-brand">
         <a class="brand footer-brand" id="footer-brand" href="index.html">
-          <span class="brand-mark" aria-hidden="true">PC</span>
+          <img class="brand-logo" src="img/pclogo.png" alt="PC na mieru">
           <span>PC na <strong>mieru</strong></span>
         </a>
         <p>Počítače na mieru, profesionálna montáž a testovanie zostavy.</p>
