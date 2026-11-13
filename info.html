@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="sk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Info a pomoc — PC na mieru</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="data/produkty.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="index.html" aria-label="PC na mieru – domov">
+        <span class="brand-mark" aria-hidden="true">PC</span>
+        <span>PC na <strong>mieru</strong></span>
+      </a>
+      <nav class="primary-nav" aria-label="Hlavná navigácia">
+        <a href="index.html">Domov</a>
+        <a href="konfigurator.html#hotove-riesenia">Obchod</a>
+        <a href="konfigurator.html">Konfigurátor</a>
+        <a href="info.html" aria-current="page">Info a pomoc</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-link cart-link" href="kosik.html">Košík <span class="cart-count" aria-live="polite">0</span></a>
+        <a class="account-link" href="ucet.html">Môj účet</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="info-page">
+    <div class="info-container">
+      <header class="info-heading">
+        <p class="eyebrow eyebrow-blue">POMOC A INFORMÁCIE</p>
+        <h1>Info a pomoc</h1>
+        <p>Praktické informácie o zostavách, nákupe a našom ukážkovom projekte.</p>
+      </header>
+
+      <section class="info-section" id="faq" aria-labelledby="faq-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">ČASTÉ OTÁZKY</p>
+          <h2 id="faq-title">FAQ</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>Ako zistím, či sú procesor a základná doska kompatibilné?</summary>
+            <p>Konfigurátor kontroluje socket vybraného procesora a základnej dosky. Pri nezhode zobrazí upozornenie a nákup zostavy nepovolí.</p>
+          </details>
+          <details>
+            <summary>Je montáž vlastnej zostavy zahrnutá v cene?</summary>
+            <p>Pri vlastnej zostave sa k cene dielov pripočíta montáž a testovanie za 39 €. Pri hotových zostavách je montáž zahrnutá v cene.</p>
+          </details>
+          <details>
+            <summary>Akú záruku majú počítače?</summary>
+            <p>Projekt uvádza 36-mesačnú záruku na počítač. Ide o ukážkovú informáciu; skutočné podmienky predaja tu nie sú poskytované.</p>
+          </details>
+          <details>
+            <summary>Viete pripraviť ponuku pre firmu?</summary>
+            <p>Ukážkový Office B2B Pack má cenu 490 € a pri nákupe aspoň 5 kusov sa v projekte uplatňuje množstevná zľava 10 %.</p>
+          </details>
+          <details>
+            <summary>Ako prebieha doručenie?</summary>
+            <p>Ukážkový košík uvádza doručenie kuriérom. Objednávka sa v tomto statickom projekte nikam neposiela.</p>
+          </details>
+          <details>
+            <summary>Kedy bude hotová zostava pripravená?</summary>
+            <p>Pri hotových riešeniach sa zobrazuje orientačný údaj „Zloženie do 48 hodín“. V tomto projekte nejde o záväzný termín dodania.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="info-section" id="o-nas" aria-labelledby="about-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-green">O PROJEKTE</p>
+          <h2 id="about-title">O nás</h2>
+        </div>
+        <div class="info-card">
+          <p>PC na mieru je ukážkový projekt počítačového obchodu. Predstavuje výber komponentov, kontrolu kompatibility a prehľad objednávky v jednom jednoduchom rozhraní.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="recenzie" aria-labelledby="reviews-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-green">SKÚSENOSTI ZÁKAZNÍKOV</p>
+          <h2 id="reviews-title">Recenzie</h2>
+        </div>
+        <div class="review-grid">
+          <article class="info-card review-card">
+            <p class="review-label">Ukážková recenzia</p>
+            <blockquote>„Konfigurátor mi pomohol rýchlo skontrolovať, či vybrané diely pasujú.“</blockquote>
+            <p class="review-author">Marek, ukážkový zákazník</p>
+          </article>
+          <article class="info-card review-card">
+            <p class="review-label">Ukážková recenzia</p>
+            <blockquote>„Hotová zostava má prehľadnú cenu a všetky dôležité informácie na jednom mieste.“</blockquote>
+            <p class="review-author">Lucia, ukážková zákazníčka</p>
+          </article>
+          <article class="info-card review-card">
+            <p class="review-label">Ukážková recenzia</p>
+            <blockquote>„Firemná ponuka je zrozumiteľná a jednoducho sa v nej orientuje.“</blockquote>
+            <p class="review-author">Peter, ukážkový zákazník</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="info-section" id="kontakt" aria-labelledby="contact-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">SME TU PRE VÁS</p>
+          <h2 id="contact-title">Kontakt</h2>
+        </div>
+        <div class="info-card info-contact">
+          <p><strong>Adresa:</strong> Mlynská 14, Košice</p>
+          <p><strong>Telefón:</strong> <a href="tel:+421900123456">+421 900 123 456</a></p>
+          <p><strong>E-mail:</strong> <a href="mailto:info@pcnamieru.sk">info@pcnamieru.sk</a></p>
+          <p><strong>Otváracie hodiny:</strong><br>Po – Pi: 09:00 – 18:00<br>So: 10:00 – 14:00<br>Ne: zatvorené</p>
+          <p><a href="https://www.google.com/maps/search/?api=1&amp;query=Mlynsk%C3%A1%2014%2C%20Ko%C5%A1ice" target="_blank" rel="noopener noreferrer">Zobraziť adresu v mapách</a></p>
+          <p class="info-disclaimer">Kontaktné údaje sú fiktívne a slúžia iba na ukážku.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="dorucenie" aria-labelledby="delivery-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">OBJEDNÁVKA</p>
+          <h2 id="delivery-title">Doručenie</h2>
+        </div>
+        <div class="info-card">
+          <p>Ukážkový spôsob doručenia je kuriérom na adresu. Dostupnosť a termín doručenia sa v tomto prototype nepotvrdzujú.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="b2b" aria-labelledby="b2b-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-green">PRE FIRMY</p>
+          <h2 id="b2b-title">B2B spolupráca</h2>
+        </div>
+        <div class="info-card">
+          <p>Ukážková firemná ponuka Office B2B Pack stojí 490 €. Pri objednávke aspoň 5 kusov sa uplatňuje množstevná zľava 10 %; skutočná ponuka sa týmto nepotvrdzuje.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="obchodne-podmienky" aria-labelledby="terms-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">DÔLEŽITÉ INFORMÁCIE</p>
+          <h2 id="terms-title">Obchodné podmienky</h2>
+        </div>
+        <div class="info-card">
+          <p>Tento web je ukážkový statický projekt, nie internetový obchod. Objednávky sa neodosielajú, platby sa nevykonávajú a uvedené údaje ani ceny nie sú záväznou ponukou.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="reklamacny-poriadok" aria-labelledby="claims-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">PODPORA</p>
+          <h2 id="claims-title">Reklamačný poriadok</h2>
+        </div>
+        <div class="info-card">
+          <p>Keďže ide o ukážkový projekt bez predaja, reklamácie sa tu neprijímajú. Text slúži iba ako miesto pre budúce informácie o reklamačnom postupe.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="ochrana-udajov" aria-labelledby="privacy-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">SÚKROMIE</p>
+          <h2 id="privacy-title">Ochrana údajov</h2>
+        </div>
+        <div class="info-card">
+          <p>Stránka neodosiela objednávky na server. Ukážkové zostavy a objednávky sa ukladajú v localStorage vášho prehliadača; môžete ich odstrániť vymazaním jeho uložených údajov.</p>
+        </div>
+      </section>
+
+      <section class="info-section" id="doprava-a-platba" aria-labelledby="shipping-payment-title">
+        <div class="info-section-heading">
+          <p class="eyebrow eyebrow-blue">NÁKUP</p>
+          <h2 id="shipping-payment-title">Doprava a platba</h2>
+        </div>
+        <div class="info-card">
+          <p>V košíku sú zobrazené ukážkové možnosti platby kartou, bankovým prevodom alebo na faktúru a doprava kuriérom. Nezadávajte skutočné platobné ani osobné údaje — nič sa nespracúva ani neodosiela.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <section class="footer-about" aria-labelledby="footer-brand">
+        <a class="brand footer-brand" id="footer-brand" href="index.html">
+          <span class="brand-mark" aria-hidden="true">PC</span>
+          <span>PC na <strong>mieru</strong></span>
+        </a>
+        <p>Počítače na mieru, profesionálna montáž a testovanie zostavy.</p>
+      </section>
+      <section class="footer-column" aria-labelledby="footer-contact">
+        <h2 id="footer-contact">Kontaktujte nás</h2>
+        <span>Mlynská 14, Košice</span>
+        <a href="tel:+421900123456">+421 900 123 456</a>
+        <a href="mailto:info@pcnamieru.sk">info@pcnamieru.sk</a>
+        <a href="info.html#kontakt">Kontakt a otváracie hodiny</a>
+      </section>
+      <section class="footer-column" aria-labelledby="footer-hours">
+        <h2 id="footer-hours">Otváracie hodiny</h2>
+        <span>Po – Pi: 09:00 – 18:00</span>
+        <span>So: 10:00 – 14:00</span>
+        <span>Ne: zatvorené</span>
+      </section>
+      <nav class="footer-column" aria-label="Informácie">
+        <h2>Informácie</h2>
+        <a href="info.html#faq">Časté otázky</a>
+        <a href="info.html#o-nas">O nás</a>
+        <a href="info.html#recenzie">Recenzie</a>
+        <a href="info.html#dorucenie">Doručenie</a>
+        <a href="info.html#b2b">B2B spolupráca</a>
+        <a href="info.html#obchodne-podmienky">Obchodné podmienky</a>
+        <a href="info.html#reklamacny-poriadok">Reklamačný poriadok</a>
+        <a href="info.html#ochrana-udajov">Ochrana údajov</a>
+        <a href="info.html#doprava-a-platba">Doprava a platba</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">© PC na mieru</div>
+  </footer>
+</body>
+</html>

@@ -1598,6 +1598,165 @@ a:focus-visible {
   background: #f5f7fa;
 }
 
+.info-page {
+  flex: 1;
+}
+
+.info-container {
+  width: min(var(--content-width), calc(100% - 48px));
+  margin: 0 auto;
+  padding: 48px 0 64px;
+}
+
+.info-heading {
+  margin-bottom: 32px;
+}
+
+.info-heading .eyebrow,
+.info-section-heading .eyebrow {
+  margin: 0 0 8px;
+}
+
+.info-heading h1 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.info-heading > p:last-child {
+  margin: 10px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.info-section {
+  margin-top: 36px;
+  scroll-margin-top: 24px;
+}
+
+.info-section:first-of-type {
+  margin-top: 0;
+}
+
+.info-section-heading {
+  margin-bottom: 16px;
+}
+
+.info-section-heading h2 {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: clamp(1.45rem, 3vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+.info-card,
+.faq-list details {
+  padding: 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 7px rgb(30 41 59 / 4%);
+}
+
+.info-card p {
+  margin: 0;
+  color: #475569;
+  font-size: 14px;
+}
+
+.info-card p + p {
+  margin-top: 12px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.faq-list details {
+  padding: 0;
+}
+
+.faq-list summary {
+  padding: 17px 20px;
+  color: var(--color-navy);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.faq-list details[open] summary {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.faq-list details > p {
+  margin: 0;
+  padding: 14px 20px 18px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.review-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.info-card .review-label {
+  color: #047857;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.review-card blockquote {
+  margin: 0;
+  color: var(--color-navy);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.info-card .review-author {
+  margin-top: auto;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.info-contact a {
+  color: #1d4ed8;
+  text-underline-offset: 3px;
+}
+
+.info-card .info-disclaimer {
+  margin-top: 16px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+@media (max-width: 760px) {
+  .info-container {
+    width: min(100% - 32px, var(--content-width));
+    padding: 36px 0 48px;
+  }
+
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .account-container {
   width: min(var(--content-width), calc(100% - 48px));
   margin: 0 auto;
