@@ -698,22 +698,36 @@ a:focus-visible {
 }
 
 .component-field {
-  margin-top: 16px;
+  min-width: 0;
+  scroll-margin-top: 20px;
 }
 
 .component-field label {
   display: block;
-  margin-bottom: 6px;
-  color: #aab8c7;
-  font-size: 10px;
-  font-weight: 750;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  margin-bottom: 4px;
+  color: #f8fafc;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.component-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.component-help {
+  min-height: 36px;
+  margin: 0 0 7px;
+  color: #cbd5e1;
+  font-size: 11px;
+  line-height: 1.45;
 }
 
 .component-field select {
   width: 100%;
-  min-height: 42px;
+  min-height: 44px;
   padding: 0 12px;
   border: 1px solid #3b4a58;
   border-radius: 6px;
@@ -726,6 +740,21 @@ a:focus-visible {
 .component-field select:focus-visible {
   outline: 3px solid #60a5fa;
   outline-offset: 2px;
+}
+
+.component-status {
+  margin: 6px 0 0;
+  color: #fecaca;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.component-status:empty {
+  display: none;
+}
+
+.component-status.is-incompatible {
+  color: #fecaca;
 }
 
 .component-field option {
@@ -795,7 +824,15 @@ a:focus-visible {
 }
 
 .builder-actions .button {
-  min-height: 42px;
+  min-height: 44px;
+}
+
+.builder-purchase-group {
+  min-width: 0;
+}
+
+.builder-purchase-group > .button {
+  width: 100%;
 }
 
 .builder-actions .button:disabled {
@@ -818,6 +855,25 @@ a:focus-visible {
   margin: 10px 0 0;
   color: #6ee7b7;
   font-size: 12px;
+}
+
+.purchase-disabled-reason {
+  margin: 7px 0 0;
+  color: #fecaca;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.purchase-disabled-reason:empty {
+  display: none;
+}
+
+.cart-build-detail {
+  margin-top: 5px !important;
+  color: #475569 !important;
+  font-size: 11px !important;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .ready-section {
@@ -994,6 +1050,14 @@ a:focus-visible {
 
   .builder-actions {
     grid-template-columns: 1fr;
+  }
+
+  .component-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .component-help {
+    min-height: 0;
   }
 }
 

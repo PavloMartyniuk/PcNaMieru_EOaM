@@ -51,20 +51,58 @@
           </div>
 
           <form id="custom-build-form">
-            <div class="component-field">
-              <label for="processor-select">Procesor</label>
-              <select id="processor-select" name="processor" required></select>
-            </div>
-            <div class="component-field">
-              <label for="motherboard-select">Základná doska</label>
-              <select id="motherboard-select" name="motherboard" required></select>
-            </div>
-            <div class="component-field">
-              <label for="graphics-card-select">Grafická karta</label>
-              <select id="graphics-card-select" name="graphicsCard" required></select>
+            <div class="component-grid">
+              <div class="component-field" id="kategoria-cpu">
+                <label for="processor-select">Procesor (CPU)</label>
+                <p class="component-help">Určuje výkon, socket a základné nároky zostavy.</p>
+                <select id="processor-select" name="processor" required></select>
+                <p class="component-status" id="processor-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-doska">
+                <label for="motherboard-select">Základná doska</label>
+                <p class="component-help">Musí mať rovnaký socket a typ RAM ako vybrané diely.</p>
+                <select id="motherboard-select" name="motherboard" required></select>
+                <p class="component-status" id="motherboard-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-ram">
+                <label for="ram-select">Pamäte RAM</label>
+                <p class="component-help">Vyberte pamäťový štandard podporovaný doskou.</p>
+                <select id="ram-select" name="ram" required></select>
+                <p class="component-status" id="ram-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-gpu">
+                <label for="graphics-card-select">Grafická karta (GPU)</label>
+                <p class="component-help">Voliteľná karta pre hry a grafické aplikácie.</p>
+                <select id="graphics-card-select" name="graphicsCard"></select>
+                <p class="component-status" id="graphics-card-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-ssd">
+                <label for="ssd-select">SSD disk</label>
+                <p class="component-help">Úložisko pre systém, programy a súbory.</p>
+                <select id="ssd-select" name="ssd" required></select>
+                <p class="component-status" id="ssd-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-chladic">
+                <label for="cooler-select">Chladič procesora</label>
+                <p class="component-help">Voliteľný chladič; pri jeho vynechaní musí mať CPU chladič v balení.</p>
+                <select id="cooler-select" name="cooler"></select>
+                <p class="component-status" id="cooler-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-zdroj">
+                <label for="power-supply-select">Zdroj (PSU)</label>
+                <p class="component-help">Výkon musí pokryť spotrebu dielov aj rezervu 150 W.</p>
+                <select id="power-supply-select" name="powerSupply" required></select>
+                <p class="component-status" id="power-supply-status" aria-live="polite"></p>
+              </div>
+              <div class="component-field" id="kategoria-skrina">
+                <label for="case-select">Skriňa</label>
+                <p class="component-help">Skontrolujeme formát dosky a rozmery GPU aj chladiča.</p>
+                <select id="case-select" name="case" required></select>
+                <p class="component-status" id="case-status" aria-live="polite"></p>
+              </div>
             </div>
 
-            <p id="compatibility-message" class="compatibility-message" role="status" aria-live="polite"></p>
+            <p id="build-status" class="compatibility-message" role="status" aria-live="polite"></p>
 
             <div class="builder-summary">
               <div class="parts-price-row">
@@ -82,7 +120,10 @@
             </div>
 
             <div class="builder-actions">
-              <button class="button button-primary" id="add-custom-build" type="submit" disabled>Konfigurácia a nákup</button>
+              <div class="builder-purchase-group">
+                <button class="button button-primary" id="add-custom-build" type="submit" disabled>Konfigurácia a nákup</button>
+                <p id="purchase-disabled-reason" class="purchase-disabled-reason" aria-live="polite"></p>
+              </div>
               <button class="button save-build-button" id="save-build" type="button">Uložiť zostavu</button>
             </div>
             <p class="saved-build-message" id="saved-build-message" role="status" aria-live="polite"></p>
