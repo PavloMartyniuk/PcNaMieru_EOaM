@@ -2219,6 +2219,206 @@ a:focus-visible {
   gap: 0;
 }
 
+.site-header {
+  transition: box-shadow 0.2s ease;
+}
+
+.site-header.has-scroll-shadow {
+  box-shadow: 0 5px 16px rgb(30 41 59 / 12%);
+}
+
+.deal-card,
+.category-tile,
+.ready-build-card,
+.review-card,
+.info-card {
+  transition: transform 0.3s ease, opacity 0.5s ease, border-color 0.15s ease;
+}
+
+.deal-card:hover,
+.deal-card:focus-within,
+.category-tile:hover,
+.category-tile:focus-visible,
+.ready-build-card:hover,
+.ready-build-card:focus-within,
+.review-card:hover,
+.review-card:focus-within,
+.info-card:hover,
+.info-card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgb(30 41 59 / 12%);
+}
+
+.deal-image img,
+.ready-build-image {
+  transition: transform 0.3s ease;
+}
+
+.deal-card:hover .deal-image img,
+.deal-card:focus-within .deal-image img,
+.ready-build-card:hover .ready-build-image,
+.ready-build-card:focus-within .ready-build-image {
+  transform: scale(1.05);
+}
+
+.button,
+button,
+.account-link,
+.cart-link {
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.button:hover:not(:disabled),
+button:hover:not(:disabled),
+.account-link:hover,
+.account-link:focus-visible,
+.cart-link:hover,
+.cart-link:focus-visible {
+  transform: translateY(-2px);
+}
+
+.button:active:not(:disabled),
+button:active:not(:disabled),
+.account-link:active,
+.cart-link:active {
+  transform: scale(0.98);
+}
+
+.cart-count-pulse {
+  animation: cart-count-pulse 0.45s ease;
+}
+
+@keyframes cart-count-pulse {
+  50% {
+    transform: scale(1.25);
+    opacity: 0.75;
+  }
+}
+
+.hero-intro-item {
+  animation: hero-content-intro 0.55s ease both;
+  animation-delay: var(--hero-delay, 0ms);
+}
+
+.hero-image-intro {
+  animation: hero-image-intro 1.2s ease both;
+}
+
+@keyframes hero-content-intro {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-image-intro {
+  from {
+    transform: scale(1.05);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.motion-enabled .motion-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform 0.5s ease var(--reveal-delay, 0ms), opacity 0.5s ease var(--reveal-delay, 0ms);
+}
+
+.motion-enabled .motion-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#build-total.price-updated {
+  animation: price-flash 0.35s ease;
+}
+
+@keyframes price-flash {
+  50% {
+    opacity: 0.55;
+    transform: scale(1.04);
+  }
+}
+
+.component-status {
+  transform: scaleY(0.9);
+  transform-origin: top;
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.component-status:empty {
+  display: block;
+  margin: 0;
+}
+
+.component-status:not(:empty) {
+  margin-top: 6px;
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+.compatibility-message {
+  transform: scaleY(0.96);
+  transform-origin: top;
+  opacity: 0;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.compatibility-message.is-compatible,
+.compatibility-message.is-incompatible {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .motion-enabled .motion-reveal,
+  .motion-enabled .motion-reveal.is-visible {
+    transform: none;
+    opacity: 1;
+  }
+
+  .deal-card:hover,
+  .deal-card:focus-within,
+  .category-tile:hover,
+  .category-tile:focus-visible,
+  .ready-build-card:hover,
+  .ready-build-card:focus-within,
+  .review-card:hover,
+  .review-card:focus-within,
+  .info-card:hover,
+  .info-card:focus-within,
+  .button:hover:not(:disabled),
+  button:hover:not(:disabled),
+  .account-link:hover,
+  .account-link:focus-visible,
+  .cart-link:hover,
+  .cart-link:focus-visible,
+  .button:active:not(:disabled),
+  button:active:not(:disabled),
+  .account-link:active,
+  .cart-link:active {
+    transform: none;
+  }
+}
+
 @media (max-width: 760px) {
   .checkout-layout {
     display: flex;

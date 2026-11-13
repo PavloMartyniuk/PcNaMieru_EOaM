@@ -4,6 +4,12 @@
   const products = window.PCNM_PRODUCTS;
   const cartKey = "pcnm_kosik";
   const savedBuildsKey = "pcnm_zostavy";
+  let previousCartCount;
+
+  function replayAnimation(element, className) {
+    element.classList.remove(className);
+    window.requestAnimationFrame(() => element.classList.add(className));
+  }
 
   function readStorage(key, fallback) {
     try {
@@ -43,7 +49,11 @@
 
     document.querySelectorAll(".cart-count").forEach((badge) => {
       badge.textContent = String(count);
+      if (previousCartCount !== undefined && count !== previousCartCount) {
+        replayAnimation(badge, "cart-count-pulse");
+      }
     });
+    previousCartCount = count;
   }
 
   function addToCart(product) {
@@ -315,6 +325,8 @@
       return problems;
     }
 
+    let hasRenderedBuildSummary = false;
+
     function updateBuildSummary() {
       const selection = selectedComponents();
       const missing = componentFields
@@ -355,7 +367,11 @@
 
       partsPrice.textContent = formatPrice(parts);
       assemblyPrice.textContent = formatPrice(assembly);
+      const previousTotal = buildTotal.textContent;
       buildTotal.textContent = formatPrice(parts + assembly);
+      if (hasRenderedBuildSummary && previousTotal !== buildTotal.textContent) {
+        replayAnimation(buildTotal, "price-updated");
+      }
       statuses.forEach((status) => {
         status.textContent = "";
         status.classList.remove("is-compatible", "is-incompatible");
@@ -385,6 +401,7 @@
       } else {
         purchaseDisabledReason.textContent = "";
       }
+      hasRenderedBuildSummary = true;
       return { selection, compatible: complete && compatible, parts, selectedParts, missing, problems };
     }
 
@@ -1042,6 +1059,60 @@
     renderSavedBuilds();
   }
 
+  function initializeMotionEffects() {
+    const header = document.querySelector(".site-header");
+    if (header) {
+      const updateHeaderShadow = () => {
+        header.classList.toggle("has-scroll-shadow", window.scrollY > 10);
+      };
+      updateHeaderShadow();
+      window.addEventListener("scroll", updateHeaderShadow, { passive: true });
+    }
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) return;
+
+    const heroItems = [
+      [document.querySelector(".hero-copy h1"), 0],
+      [document.querySelector(".hero-description"), 160],
+      [document.querySelector(".hero-copy .button"), 320]
+    ];
+    heroItems.forEach(([element, delay]) => {
+      if (!element) return;
+      element.classList.add("hero-intro-item");
+      element.style.setProperty("--hero-delay", `${delay}ms`);
+    });
+    document.querySelector(".hero-visual img")?.classList.add("hero-image-intro");
+
+    if (!("IntersectionObserver" in window)) return;
+
+    const revealTargets = document.querySelectorAll(
+      ".deals-section, .categories-section, .home-reviews-section, .deal-card, .category-tile, .review-card, .ready-section, .ready-build-card, .info-section, .info-card, .faq-list details"
+    );
+    const cardGroups = document.querySelectorAll(
+      ".deal-grid, .category-grid, .review-grid, .ready-build-grid"
+    );
+    cardGroups.forEach((group) => {
+      [...group.children].forEach((card, index) => {
+        card.style.setProperty("--reveal-delay", `${index * 80}ms`);
+      });
+    });
+
+    const observer = new IntersectionObserver((entries, currentObserver) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        currentObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+
+    revealTargets.forEach((element) => {
+      element.classList.add("motion-reveal");
+      observer.observe(element);
+    });
+    document.body.classList.add("motion-enabled");
+  }
+
   if (!products) {
     console.error("Katalóg produktov sa nenačítal. Skontrolujte cestu k data/produkty.js.");
     return;
@@ -1058,4 +1129,5 @@
   initializeCartPage();
   initializeConfirmationPage();
   initializeAccountPage();
+  initializeMotionEffects();
 })();
