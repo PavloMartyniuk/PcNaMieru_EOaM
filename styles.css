@@ -1252,18 +1252,7 @@ a:focus-visible {
   background: #f8fafc;
 }
 
-.shipping-icon {
-  display: grid;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 auto;
-  place-items: center;
-  border-radius: 5px;
-  background: #fff;
-  color: var(--color-navy);
-}
-
-.shipping-choice > span:nth-child(2) {
+.shipping-choice > span {
   display: grid;
   gap: 2px;
   color: var(--color-navy);
@@ -1601,5 +1590,245 @@ a:focus-visible {
 
   .checkout-card {
     padding: 16px;
+  }
+}
+
+.checkout-page {
+  overflow-x: clip;
+}
+
+.checkout-steps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 24px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout-steps li {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.checkout-steps li:not(:last-child)::after {
+  position: absolute;
+  left: calc(100% + 10px);
+  color: #94a3b8;
+  content: "→";
+}
+
+.checkout-steps li > span {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  background: #fff;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.checkout-steps .is-current {
+  color: var(--color-blue);
+  font-weight: 700;
+}
+
+.checkout-steps .is-current > span {
+  border-color: var(--color-blue);
+  background: var(--color-blue);
+  color: #fff;
+}
+
+.checkout-heading .eyebrow {
+  color: var(--color-blue);
+}
+
+.checkout-main-column {
+  gap: 16px;
+}
+
+.checkout-form {
+  display: grid;
+  gap: 16px;
+}
+
+.form-grid {
+  align-items: start;
+  column-gap: 16px;
+  row-gap: 12px;
+}
+
+.form-grid > .form-field {
+  align-self: start;
+  grid-template-rows: 18px 44px 16px auto;
+  margin: 0;
+}
+
+.form-grid > .form-field label {
+  min-height: 18px;
+  line-height: 18px;
+}
+
+.form-field input,
+.form-field select {
+  height: 44px;
+  min-height: 44px;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 20px;
+}
+
+.form-field input::placeholder {
+  color: #64748b;
+  opacity: 1;
+}
+
+.input-hint {
+  min-height: 16px;
+  margin-top: -2px;
+  color: #64748b;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.form-grid .field-error {
+  min-height: 16px;
+  line-height: 16px;
+}
+
+.field-error:not(:empty) {
+  margin-top: -3px;
+}
+
+.cart-item-image,
+.cart-item-image img {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+}
+
+.cart-item-details h3 {
+  overflow-wrap: anywhere;
+}
+
+.remove-item-button {
+  display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 4px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.remove-item-button:hover {
+  background: #f1f5f9;
+  color: #991b1b;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.quantity-button {
+  width: 44px;
+  height: 44px;
+}
+
+.discount-hint,
+.secure-note {
+  color: #cbd5e1;
+}
+
+.shipping-choice {
+  gap: 0;
+}
+
+@media (max-width: 760px) {
+  .checkout-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .checkout-main-column {
+    display: contents;
+  }
+
+  .cart-items-card {
+    order: 0;
+    width: 100%;
+  }
+
+  .order-summary-card {
+    position: static;
+    order: 1;
+    width: 100%;
+  }
+
+  .checkout-form {
+    order: 2;
+    width: 100%;
+  }
+}
+
+@media (max-width: 900px) {
+  .cart-item {
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+  }
+}
+
+@media (max-width: 500px) {
+  .checkout-steps {
+    justify-content: flex-start;
+    gap: 22px;
+    margin-bottom: 20px;
+  }
+
+  .checkout-steps li {
+    gap: 5px;
+    font-size: 10px;
+  }
+
+  .checkout-steps li:not(:last-child)::after {
+    left: calc(100% + 7px);
+  }
+
+  .checkout-steps li > span {
+    width: 22px;
+    height: 22px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .cart-item-image,
+  .cart-item-image img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .quantity-controls {
+    gap: 6px;
+  }
+
+  .quantity-button {
+    width: 44px;
+    height: 44px;
   }
 }

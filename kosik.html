@@ -32,7 +32,12 @@
   <main class="checkout-page">
     <div class="checkout-container">
       <div class="checkout-heading">
-        <p class="eyebrow eyebrow-green">KOŠÍK / DOKONČENIE OBJEDNÁVKY</p>
+        <ol class="checkout-steps" aria-label="Priebeh objednávky">
+          <li class="is-current" aria-current="step"><span>1</span> Košík</li>
+          <li><span>2</span> Doručenie a platba</li>
+          <li><span>3</span> Potvrdenie</li>
+        </ol>
+        <p class="eyebrow eyebrow-blue">KOŠÍK / DOKONČENIE OBJEDNÁVKY</p>
         <h1>Váš košík</h1>
       </div>
 
@@ -65,12 +70,14 @@
               <div class="form-grid">
                 <div class="form-field">
                   <label for="company-ico">IČO</label>
-                  <input id="company-ico" name="ico" type="text" inputmode="numeric" autocomplete="off" maxlength="8" aria-describedby="ico-error" placeholder="8 číslic">
+                  <input id="company-ico" name="ico" type="text" inputmode="numeric" autocomplete="off" maxlength="8" aria-describedby="ico-error ico-help" placeholder="Zadajte IČO">
+                  <small class="input-hint" id="ico-help">8 číslic</small>
                   <span class="field-error" id="ico-error" aria-live="polite"></span>
                 </div>
                 <div class="form-field">
                   <label for="company-dic">DIČ</label>
-                  <input id="company-dic" name="dic" type="text" inputmode="numeric" autocomplete="off" maxlength="10" aria-describedby="dic-error" placeholder="10 číslic">
+                  <input id="company-dic" name="dic" type="text" inputmode="numeric" autocomplete="off" maxlength="10" aria-describedby="dic-error dic-help" placeholder="Zadajte DIČ">
+                  <small class="input-hint" id="dic-help">10 číslic</small>
                   <span class="field-error" id="dic-error" aria-live="polite"></span>
                 </div>
               </div>
@@ -91,7 +98,6 @@
                 <span class="field-error" id="payment-error" aria-live="polite"></span>
               </div>
               <div class="shipping-choice">
-                <span class="shipping-icon" aria-hidden="true">↗</span>
                 <span><strong>Doprava kuriérom</strong><small>Doručenie na adresu</small></span>
                 <strong class="shipping-price">Zadarmo</strong>
               </div>

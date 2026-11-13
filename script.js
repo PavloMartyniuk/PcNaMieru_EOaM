@@ -70,6 +70,13 @@
     return `${new Intl.NumberFormat("sk-SK", { maximumFractionDigits: 0 }).format(value)} €`;
   }
 
+  function quantityNoun(quantity) {
+    const lastTwoDigits = quantity % 100;
+    if (quantity === 1) return "kus";
+    if (quantity % 10 >= 2 && quantity % 10 <= 4 && (lastTwoDigits < 12 || lastTwoDigits > 14)) return "kusy";
+    return "kusov";
+  }
+
   function allCatalogProducts() {
     return [
       ...products.processors,
@@ -389,7 +396,7 @@
       const cart = currentCart();
       const totals = calculateTotals(cart);
       cartContainer.replaceChildren();
-      itemCount.textContent = `${totals.quantity} ${totals.quantity === 1 ? "kus" : "kusov"}`;
+      itemCount.textContent = `${totals.quantity} ${quantityNoun(totals.quantity)}`;
 
       cart.forEach((item) => {
         const row = document.createElement("article");
@@ -398,22 +405,19 @@
         const product = findProduct(item.id);
         const imageArea = document.createElement("div");
         imageArea.className = "cart-item-image";
-        if (product && product.obrazok) {
-          const image = document.createElement("img");
-          image.src = product.obrazok;
-          image.alt = product.alt || product.nazov;
-          imageArea.append(image);
-        } else {
-          imageArea.textContent = "PC";
-          imageArea.setAttribute("aria-label", "Vlastná zostava");
-        }
+        const image = document.createElement("img");
+        image.src = product?.obrazok || "img/akcia1.jpg";
+        image.alt = product?.alt || (product ? product.nazov : "Vlastná zostava počítača na mieru");
+        imageArea.append(image);
 
         const details = document.createElement("div");
         details.className = "cart-item-details";
         const title = document.createElement("h3");
         title.textContent = item.nazov;
         const unitPrice = document.createElement("p");
-        unitPrice.textContent = `${formatPrice(item.cena)} za kus`;
+        unitPrice.textContent = item.montaz > 0
+          ? `${formatPrice(item.cena)} + ${formatPrice(item.montaz)} montáž`
+          : `${formatPrice(item.cena)} za kus, montáž v cene`;
         details.append(title, unitPrice);
 
         const controls = document.createElement("div");
@@ -461,9 +465,10 @@
       assemblyElement.textContent = formatPrice(totals.assembly);
       discountElement.textContent = totals.discount > 0 ? `−${formatPrice(totals.discount)}` : formatPrice(0);
       totalElement.textContent = formatPrice(totals.total);
+      const missingForDiscount = 5 - totals.quantity;
       discountHint.textContent = totals.quantity >= 5
         ? "Množstevná zľava 10 % bola odpočítaná."
-        : `Do zľavy 10 % vám chýba ${5 - totals.quantity} ${5 - totals.quantity === 1 ? "kus" : "kusy"}.`;
+        : `Do zľavy 10 % vám chýba ${missingForDiscount} ${quantityNoun(missingForDiscount)}.`;
       updateCartCount();
       return { cart, totals };
     }
